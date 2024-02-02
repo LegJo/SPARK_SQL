@@ -1,19 +1,18 @@
 import java.util.Properties
 import java.sql.SQLException
 import org.apache.spark.sql.{DataFrame, SparkSession}
-//To run sbt server with jdk11 : sbt -java-home "C:\Program Files\Java\jdk-11"
+//To run sbt server with jdk11 : sbt -java-home "C:\Users\Adamou\AppData\Local\Coursier\cache\arc\https\github.com\adoptium\temurin11-binaries\releases\download\jdk-11.0.21%252B9\OpenJDK11U-jdk_x64_windows_hotspot_11.0.21_9.zip\jdk-11.0.21+9"
 
 
 object configSQLServer {
-    private val SQLServerDriver:String = "com.microsoft.sqlserver.jdbc.SQLServerDriver"
+    private val SQLServerDriver:String = "oracle.jdbc.driver.OracleDriver"
     private val jdbcHostname:String = "localhost";
-    private val jdbcPort:Int = 1433; 
-    private val jdbcDatabase:String = "JL_DB_PROD";
-    private val jdbcUsername:String = "jl_admin";
-    private val jdbcPassword:String = "dbadmin";
-
+    private val jdbcPort:Int = 1521;
+    private val jdbcDatabase:String = "XE";
+    private val jdbcUsername:String = "system";
+    private val jdbcPassword:String = "root";
     Class.forName(SQLServerDriver);
-    val jdbcUrl:String = s"jdbc:sqlserver://${jdbcHostname}:${jdbcPort};database=${jdbcDatabase}";
+    val jdbcUrl: String = s"jdbc:oracle:thin:@${jdbcHostname}:${jdbcPort}:${jdbcDatabase}"
     val connectionProperties:Properties = new Properties() {{
       put("user", jdbcUsername);
       put("password", jdbcPassword);
