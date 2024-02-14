@@ -40,16 +40,17 @@ object SparkSQLApp {
     printLine();
 
     //SQL Statements Exemples 
-    var selectedData:Option[DataFrame] = SQLStatements.select("dbo.film");
+    var selectedData:Option[DataFrame] = SQLStatements.selectTable("dbo.film","titre, genre","titre='Crash' OR genre='Policier'");
     printDataFrame(selectedData);
     
-    val dataToInsert:DataFrame = Seq((777, "Spark Le Film", "SparkGenre", 2025)).toDF("num_ind", "titre", "genre", "annee");
-    SQLStatements.insert("dbo.film", dataToInsert);
-    selectedData = SQLStatements.select("dbo.film");
+    val dfOfTableToCreate:DataFrame = Seq((777, "Spark Le Film", "SparkGenre", 2025)).toDF("num_ind", "titre", "genre", "annee");
+    SQLStatements.createTable("dbo.film_test", dfOfTableToCreate);
+    selectedData = SQLStatements.selectTable("dbo.film_test");
     printDataFrame(selectedData);
 
-    SQLStatements.delete("dbo.film", "num_ind = 777");
-    selectedData = SQLStatements.select("dbo.film");
+    val dfToInsert:DataFrame = Seq((777888, "Spark Le Film 2", "SparkGenre", 2025)).toDF("num_ind", "titre", "genre", "annee");
+    SQLStatements.insertInTable("dbo.film_test", dfToInsert);
+    selectedData = SQLStatements.selectTable("dbo.film_test");
     printDataFrame(selectedData);
 
     // Arrêter la session Spark
