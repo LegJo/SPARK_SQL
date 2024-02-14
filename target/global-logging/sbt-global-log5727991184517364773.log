@@ -1,0 +1,8 @@
+[0m[[0m[0mdebug[0m] [0m[0m> Exec(spark, Some(26aaccb5-af55-4add-a3af-54f64b9ae326), Some(CommandSource(console0)))[0m
+[0m[[0m[31merror[0m] [0m[0mNot a valid command: spark (similar: skipBanner)[0m
+[0m[[0m[31merror[0m] [0m[0mNot a valid project ID: spark (similar: spark_sql)[0m
+[0m[[0m[31merror[0m] [0m[0mExpected ':'[0m
+[0m[[0m[31merror[0m] [0m[0mNot a valid key: spark (similar: package, skip, fork)[0m
+[0m[[0m[31merror[0m] [0m[0mspark[0m
+[0m[[0m[31merror[0m] [0m[0m     ^[0m
+[0m[[0m[0mdebug[0m] [0m[0m> Exec(shell, None, None)[0m

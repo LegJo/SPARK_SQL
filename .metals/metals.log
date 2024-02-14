@@ -1,0 +1,209 @@
+2024.01.25 17:17:05 INFO  Started: Metals version 1.2.0+84-0fef9a16-SNAPSHOT in folders 'H:\Documents\Zy - Scala\spark_sql' for client Visual Studio Code 1.85.2.
+2024.01.25 17:17:07 WARN  Build server is not auto-connectable.
+janv. 25, 2024 5:17:09 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTrace
+janv. 25, 2024 5:17:09 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTrace
+2024.01.25 17:17:10 INFO  running 'C:\Program Files\Java\jdk-21\bin\java.exe -Djline.terminal=jline.UnsupportedTerminal -Dsbt.log.noformat=true -Dfile.encoding=UTF-8 -jar C:\Users\CYTECH~1\AppData\Local\Temp\metals8098248649914551310\sbt-launch.jar -Dbloop.export-jar-classifiers=sources bloopInstall'
+2024.01.25 17:17:12 INFO  [info] welcome to sbt 1.9.7 (Oracle Corporation Java 21.0.1)
+2024.01.25 17:17:13 WARN  no build target for: H:\Documents\Zy - Scala\spark_sql\build.sbt
+2024.01.25 17:17:18 INFO  [info] loading settings for project spark_sql-build-build from metals.sbt ...
+2024.01.25 17:17:20 INFO  [info] loading project definition from H:\Documents\Zy - Scala\spark_sql\project\project
+2024.01.25 17:17:20 INFO  no build target found for H:\Documents\Zy - Scala\spark_sql\build.sbt. Using presentation compiler with project's scala-library version: 3.3.1
+2024.01.25 17:17:23 WARN  Could not find semantic tokens for: file:///H:/Documents/Zy%20-%20Scala/spark_sql/build.sbt
+2024.01.25 17:17:23 INFO  time: code lens generation in 4.75s
+2024.01.25 17:17:23 INFO  time: code lens generation in 8.46s
+2024.01.25 17:17:23 WARN  Could not find semantic tokens for: file:///H:/Documents/Zy%20-%20Scala/spark_sql/build.sbt
+2024.01.25 17:17:24 INFO  [info] loading settings for project spark_sql-build from metals.sbt ...
+2024.01.25 17:17:24 WARN  Could not find semantic tokens for: file:///H:/Documents/Zy%20-%20Scala/spark_sql/build.sbt
+2024.01.25 17:17:24 INFO  [info] loading project definition from H:\Documents\Zy - Scala\spark_sql\project
+2024.01.25 17:17:26 WARN  Could not find semantic tokens for: file:///H:/Documents/Zy%20-%20Scala/spark_sql/build.sbt
+2024.01.25 17:17:28 INFO  [success] Generated .bloop\spark_sql-build.json
+2024.01.25 17:17:29 WARN  Could not find semantic tokens for: file:///H:/Documents/Zy%20-%20Scala/spark_sql/build.sbt
+2024.01.25 17:17:28 INFO  [success] Total time: 5 s, completed 25 janv. 2024, 17:17:29
+2024.01.25 17:17:29 WARN  Could not find semantic tokens for: file:///H:/Documents/Zy%20-%20Scala/spark_sql/build.sbt
+2024.01.25 17:17:33 INFO  [info] loading settings for project spark_sql from build.sbt ...
+2024.01.25 17:17:33 INFO  [info] set current project to hello-world (in build file:/H:/Documents/Zy%20-%20Scala/spark_sql/)
+2024.01.25 17:17:35 INFO  [success] Generated .bloop\spark_sql-test.json
+2024.01.25 17:17:35 INFO  [success] Generated .bloop\spark_sql.json
+2024.01.25 17:17:35 INFO  [success] Total time: 2 s, completed 25 janv. 2024, 17:17:35
+2024.01.25 17:17:35 INFO  time: ran 'sbt bloopInstall' in 25s
+2024.01.25 17:17:35 INFO  Attempting to connect to the build server...
+2024.01.25 17:17:35 INFO  Bloop uses C:\Program Files\Java\jdk-21 defined at C:\Users\CYTech Student\.bloop\bloop.json
+2024.01.25 17:17:37 WARN  Could not find semantic tokens for: file:///H:/Documents/Zy%20-%20Scala/spark_sql/build.sbt
+2024.01.25 17:17:38 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at H:\Documents\Zy - Scala\spark_sql\.metals\bsp.trace.json or C:\Users\CYTech Student\AppData\Local\scalameta\metals\cache\bsp.trace.json
+2024.01.25 17:17:42 INFO  Attempting to connect to the build server...
+2024.01.25 17:17:42 INFO  Bloop uses C:\Program Files\Java\jdk-21 defined at C:\Users\CYTech Student\.bloop\bloop.json
+2024.01.25 17:17:42 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at H:\Documents\Zy - Scala\spark_sql\project\.metals\bsp.trace.json or C:\Users\CYTech Student\AppData\Local\scalameta\metals\cache\bsp.trace.json
+2024.01.25 17:17:44 INFO  time: Connected to build server in 8.42s
+2024.01.25 17:17:44 INFO  Connected to Build server: Bloop v1.5.13
+2024.01.25 17:17:44 INFO  time: Imported build in 0.2s
+janv. 25, 2024 5:18:04 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 57
+janv. 25, 2024 5:18:04 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 62
+janv. 25, 2024 5:18:04 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 50
+janv. 25, 2024 5:18:04 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 53
+2024.01.25 17:18:09 INFO  time: code lens generation in 5.19s
+2024.01.25 17:18:10 INFO  time: code lens generation in 4.07s
+2024.01.25 17:18:10 INFO  time: code lens generation in 5.3s
+2024.01.25 17:18:10 INFO  time: code lens generation in 3.31s
+2024.01.25 17:18:11 INFO  running 'C:\Program Files\Java\jdk-21\bin\java.exe -Djline.terminal=jline.UnsupportedTerminal -Dsbt.log.noformat=true -Dfile.encoding=UTF-8 -jar C:\Users\CYTECH~1\AppData\Local\Temp\metals15510216238517824910\sbt-launch.jar -Dbloop.export-jar-classifiers=sources bloopInstall'
+2024.01.25 17:18:12 INFO  time: indexed workspace in 27s
+2024.01.25 17:18:14 INFO  [info] welcome to sbt 1.9.7 (Oracle Corporation Java 21.0.1)
+2024.01.25 17:18:16 INFO  [info] loading settings for project spark_sql-build-build from metals.sbt ...
+2024.01.25 17:18:17 INFO  [info] loading project definition from H:\Documents\Zy - Scala\spark_sql\project\project
+2024.01.25 17:18:18 INFO  time: code lens generation in 5.79s
+2024.01.25 17:18:18 INFO  [info] loading settings for project spark_sql-build from metals.sbt ...
+2024.01.25 17:18:18 INFO  [info] loading project definition from H:\Documents\Zy - Scala\spark_sql\project
+2024.01.25 17:18:22 INFO  [success] Generated .bloop\spark_sql-build.json
+2024.01.25 17:18:22 INFO  [success] Total time: 3 s, completed 25 janv. 2024, 17:18:22
+2024.01.25 17:18:26 INFO  [info] loading settings for project spark_sql from build.sbt ...
+2024.01.25 17:18:26 INFO  [info] set current project to SparkSQL (in build file:/H:/Documents/Zy%20-%20Scala/spark_sql/)
+2024.01.25 17:18:30 INFO  [warn] 
+2024.01.25 17:18:30 INFO  [warn] 	Note: Unresolved dependencies path:
+2024.01.25 17:18:30 INFO  [error] Couldn't run bloopGenerate. The issue could be caused by failing to compile the project.
+2024.01.25 17:18:30 INFO  [warn] Removed stale H:\Documents\Zy - Scala\spark_sql\.bloop\spark_sql-test.json
+2024.01.25 17:18:30 INFO  [warn] Removed stale H:\Documents\Zy - Scala\spark_sql\.bloop\spark_sql.json
+2024.01.25 17:18:30 INFO  [error] sbt.librarymanagement.ResolveException: Error downloading org.apache.spark:spark-sql_2.13:3.0.0-preview2
+2024.01.25 17:18:30 INFO  [error]   Not found
+2024.01.25 17:18:30 INFO  [error]   Not found
+2024.01.25 17:18:30 INFO  [error]   not found: C:\Users\CYTech Student\.ivy2\localorg.apache.spark\spark-sql_2.13\3.0.0-preview2\ivys\ivy.xml
+2024.01.25 17:18:30 INFO  [error]   not found: https://repo1.maven.org/maven2/org/apache/spark/spark-sql_2.13/3.0.0-preview2/spark-sql_2.13-3.0.0-preview2.pom
+2024.01.25 17:18:30 INFO  [error] 	at lmcoursier.CoursierDependencyResolution.unresolvedWarningOrThrow(CoursierDependencyResolution.scala:344)
+2024.01.25 17:18:30 INFO  [error] 	at lmcoursier.CoursierDependencyResolution.$anonfun$update$38(CoursierDependencyResolution.scala:313)
+2024.01.25 17:18:30 INFO  [error] 	at scala.util.Either$LeftProjection.map(Either.scala:573)
+2024.01.25 17:18:30 INFO  [error] 	at lmcoursier.CoursierDependencyResolution.update(CoursierDependencyResolution.scala:313)
+2024.01.25 17:18:30 INFO  [error] 	at sbt.librarymanagement.DependencyResolution.update(DependencyResolution.scala:60)
+2024.01.25 17:18:30 INFO  [error] 	at sbt.internal.LibraryManagement$.resolve$1(LibraryManagement.scala:60)
+2024.01.25 17:18:30 INFO  [error] 	at sbt.internal.LibraryManagement$.$anonfun$cachedUpdate$12(LibraryManagement.scala:134)
+2024.01.25 17:18:30 INFO  [error] 	at sbt.util.Tracked$.$anonfun$lastOutput$1(Tracked.scala:74)
+2024.01.25 17:18:30 INFO  [error] 	at sbt.internal.LibraryManagement$.$anonfun$cachedUpdate$20(LibraryManagement.scala:147)
+2024.01.25 17:18:30 INFO  [error] 	at scala.util.control.Exception$Catch.apply(Exception.scala:228)
+2024.01.25 17:18:30 INFO  [error] 	at sbt.internal.LibraryManagement$.$anonfun$cachedUpdate$11(LibraryManagement.scala:147)
+2024.01.25 17:18:30 INFO  [error] 	at sbt.internal.LibraryManagement$.$anonfun$cachedUpdate$11$adapted(LibraryManagement.scala:128)
+2024.01.25 17:18:30 INFO  [error] 	at sbt.util.Tracked$.$anonfun$inputChangedW$1(Tracked.scala:220)
+2024.01.25 17:18:30 INFO  [error] 	at sbt.internal.LibraryManagement$.cachedUpdate(LibraryManagement.scala:161)
+2024.01.25 17:18:30 INFO  [error] 	at sbt.Classpaths$.$anonfun$updateTask0$1(Defaults.scala:3801)
+2024.01.25 17:18:30 INFO  [error] 	at scala.Function1.$anonfun$compose$1(Function1.scala:49)
+2024.01.25 17:18:30 INFO  [error] 	at sbt.internal.util.$tilde$greater.$anonfun$$u2219$1(TypeFunctions.scala:63)
+2024.01.25 17:18:30 INFO  [error] 	at sbt.std.Transform$$anon$4.work(Transform.scala:69)
+2024.01.25 17:18:30 INFO  [error] 	at sbt.Execute.$anonfun$submit$2(Execute.scala:283)
+2024.01.25 17:18:30 INFO  [error] 	at sbt.internal.util.ErrorHandling$.wideConvert(ErrorHandling.scala:24)
+2024.01.25 17:18:30 INFO  [error] 	at sbt.Execute.work(Execute.scala:292)
+2024.01.25 17:18:30 INFO  [error] 	at sbt.Execute.$anonfun$submit$1(Execute.scala:283)
+2024.01.25 17:18:30 INFO  [error] 	at sbt.ConcurrentRestrictions$$anon$4.$anonfun$submitValid$1(ConcurrentRestrictions.scala:265)
+2024.01.25 17:18:30 INFO  [error] 	at sbt.CompletionService$$anon$2.call(CompletionService.scala:65)
+2024.01.25 17:18:30 INFO  [error] 	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+2024.01.25 17:18:30 INFO  [error] 	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:572)
+2024.01.25 17:18:30 INFO  [error] 	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+2024.01.25 17:18:30 INFO  [error] 	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+2024.01.25 17:18:30 INFO  [error] 	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+2024.01.25 17:18:30 INFO  [error] 	at java.base/java.lang.Thread.run(Thread.java:1583)
+2024.01.25 17:18:30 INFO  [error] (update) sbt.librarymanagement.ResolveException: Error downloading org.apache.spark:spark-sql_2.13:3.0.0-preview2
+2024.01.25 17:18:30 INFO  [error]   Not found
+2024.01.25 17:18:30 INFO  [error]   Not found
+2024.01.25 17:18:30 INFO  [error]   not found: C:\Users\CYTech Student\.ivy2\localorg.apache.spark\spark-sql_2.13\3.0.0-preview2\ivys\ivy.xml
+2024.01.25 17:18:30 INFO  [error]   not found: https://repo1.maven.org/maven2/org/apache/spark/spark-sql_2.13/3.0.0-preview2/spark-sql_2.13-3.0.0-preview2.pom
+2024.01.25 17:18:30 INFO  [error] Total time: 4 s, completed 25 janv. 2024, 17:18:31
+2024.01.25 17:18:31 INFO  time: ran 'sbt bloopInstall' in 20s
+2024.01.25 17:18:31 ERROR sbt command failed: C:\Program Files\Java\jdk-21\bin\java.exe -Djline.terminal=jline.UnsupportedTerminal -Dsbt.log.noformat=true -Dfile.encoding=UTF-8 -jar C:\Users\CYTECH~1\AppData\Local\Temp\metals15510216238517824910\sbt-launch.jar -Dbloop.export-jar-classifiers=sources bloopInstall
+2024.01.25 17:18:31 INFO  Disconnecting from Bloop session...
+2024.01.25 17:18:31 INFO  Shut down connection with build server.
+2024.01.25 17:18:31 INFO  Shut down connection with build server.
+2024.01.25 17:18:31 INFO  Attempting to connect to the build server...
+2024.01.25 17:18:31 INFO  Bloop uses C:\Program Files\Java\jdk-21 defined at C:\Users\CYTech Student\.bloop\bloop.json
+2024.01.25 17:18:31 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at H:\Documents\Zy - Scala\spark_sql\.metals\bsp.trace.json or C:\Users\CYTech Student\AppData\Local\scalameta\metals\cache\bsp.trace.json
+2024.01.25 17:18:31 INFO  Attempting to connect to the build server...
+2024.01.25 17:18:31 INFO  Bloop uses C:\Program Files\Java\jdk-21 defined at C:\Users\CYTech Student\.bloop\bloop.json
+2024.01.25 17:18:31 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at H:\Documents\Zy - Scala\spark_sql\project\.metals\bsp.trace.json or C:\Users\CYTech Student\AppData\Local\scalameta\metals\cache\bsp.trace.json
+2024.01.25 17:18:31 INFO  time: Connected to build server in 0.26s
+2024.01.25 17:18:31 INFO  Connected to Build server: Bloop v1.5.13
+2024.01.25 17:18:31 INFO  time: Imported build in 0.27s
+2024.01.25 17:18:34 INFO  time: indexed workspace in 2.97s
+2024.01.25 17:18:37 INFO  time: code lens generation in 2.38s
+2024.01.25 17:26:23 INFO  running 'C:\Program Files\Java\jdk-21\bin\java.exe -Djline.terminal=jline.UnsupportedTerminal -Dsbt.log.noformat=true -Dfile.encoding=UTF-8 -jar C:\Users\CYTECH~1\AppData\Local\Temp\metals4314755614361681452\sbt-launch.jar -Dbloop.export-jar-classifiers=sources bloopInstall'
+2024.01.25 17:26:26 INFO  [info] welcome to sbt 1.9.7 (Oracle Corporation Java 21.0.1)
+2024.01.25 17:26:27 INFO  [info] loading settings for project spark_sql-build-build from metals.sbt ...
+2024.01.25 17:26:28 INFO  [info] loading project definition from H:\Documents\Zy - Scala\spark_sql\project\project
+2024.01.25 17:26:29 INFO  [info] loading settings for project spark_sql-build from metals.sbt ...
+2024.01.25 17:26:29 INFO  [info] loading project definition from H:\Documents\Zy - Scala\spark_sql\project
+2024.01.25 17:26:33 INFO  [success] Generated .bloop\spark_sql-build.json
+2024.01.25 17:26:33 INFO  [success] Total time: 4 s, completed 25 janv. 2024, 17:26:33
+2024.01.25 17:26:33 INFO  [info] loading settings for project spark_sql from build.sbt ...
+2024.01.25 17:26:33 INFO  [info] set current project to SparkSQL (in build file:/H:/Documents/Zy%20-%20Scala/spark_sql/)
+2024.01.25 17:26:35 INFO  [warn] 
+2024.01.25 17:26:35 INFO  [warn] 	Note: Unresolved dependencies path:
+2024.01.25 17:26:35 INFO  [error] Couldn't run bloopGenerate. The issue could be caused by failing to compile the project.
+2024.01.25 17:26:35 INFO  [error] sbt.librarymanagement.ResolveException: Error downloading org.apache.spark:spark-sql_2.13:3.0.0-preview2
+2024.01.25 17:26:35 INFO  [error]   Not found
+2024.01.25 17:26:35 INFO  [error]   Not found
+2024.01.25 17:26:35 INFO  [error]   not found: C:\Users\CYTech Student\.ivy2\localorg.apache.spark\spark-sql_2.13\3.0.0-preview2\ivys\ivy.xml
+2024.01.25 17:26:35 INFO  [error]   not found: https://repo1.maven.org/maven2/org/apache/spark/spark-sql_2.13/3.0.0-preview2/spark-sql_2.13-3.0.0-preview2.pom
+2024.01.25 17:26:35 INFO  [error] 	at lmcoursier.CoursierDependencyResolution.unresolvedWarningOrThrow(CoursierDependencyResolution.scala:344)
+2024.01.25 17:26:35 INFO  [error] 	at lmcoursier.CoursierDependencyResolution.$anonfun$update$38(CoursierDependencyResolution.scala:313)
+2024.01.25 17:26:35 INFO  [error] 	at scala.util.Either$LeftProjection.map(Either.scala:573)
+2024.01.25 17:26:35 INFO  [error] 	at lmcoursier.CoursierDependencyResolution.update(CoursierDependencyResolution.scala:313)
+2024.01.25 17:26:35 INFO  [error] 	at sbt.librarymanagement.DependencyResolution.update(DependencyResolution.scala:60)
+2024.01.25 17:26:35 INFO  [error] 	at sbt.internal.LibraryManagement$.resolve$1(LibraryManagement.scala:60)
+2024.01.25 17:26:35 INFO  [error] 	at sbt.internal.LibraryManagement$.$anonfun$cachedUpdate$12(LibraryManagement.scala:134)
+2024.01.25 17:26:35 INFO  [error] 	at sbt.util.Tracked$.$anonfun$lastOutput$1(Tracked.scala:74)
+2024.01.25 17:26:35 INFO  [error] 	at sbt.internal.LibraryManagement$.$anonfun$cachedUpdate$20(LibraryManagement.scala:147)
+2024.01.25 17:26:35 INFO  [error] 	at scala.util.control.Exception$Catch.apply(Exception.scala:228)
+2024.01.25 17:26:35 INFO  [error] 	at sbt.internal.LibraryManagement$.$anonfun$cachedUpdate$11(LibraryManagement.scala:147)
+2024.01.25 17:26:35 INFO  [error] 	at sbt.internal.LibraryManagement$.$anonfun$cachedUpdate$11$adapted(LibraryManagement.scala:128)
+2024.01.25 17:26:35 INFO  [error] 	at sbt.util.Tracked$.$anonfun$inputChangedW$1(Tracked.scala:220)
+2024.01.25 17:26:35 INFO  [error] 	at sbt.internal.LibraryManagement$.cachedUpdate(LibraryManagement.scala:161)
+2024.01.25 17:26:35 INFO  [error] 	at sbt.Classpaths$.$anonfun$updateTask0$1(Defaults.scala:3801)
+2024.01.25 17:26:35 INFO  [error] 	at scala.Function1.$anonfun$compose$1(Function1.scala:49)
+2024.01.25 17:26:35 INFO  [error] 	at sbt.internal.util.$tilde$greater.$anonfun$$u2219$1(TypeFunctions.scala:63)
+2024.01.25 17:26:35 INFO  [error] 	at sbt.std.Transform$$anon$4.work(Transform.scala:69)
+2024.01.25 17:26:35 INFO  [error] 	at sbt.Execute.$anonfun$submit$2(Execute.scala:283)
+2024.01.25 17:26:35 INFO  [error] 	at sbt.internal.util.ErrorHandling$.wideConvert(ErrorHandling.scala:24)
+2024.01.25 17:26:35 INFO  [error] 	at sbt.Execute.work(Execute.scala:292)
+2024.01.25 17:26:35 INFO  [error] 	at sbt.Execute.$anonfun$submit$1(Execute.scala:283)
+2024.01.25 17:26:35 INFO  [error] 	at sbt.ConcurrentRestrictions$$anon$4.$anonfun$submitValid$1(ConcurrentRestrictions.scala:265)
+2024.01.25 17:26:35 INFO  [error] 	at sbt.CompletionService$$anon$2.call(CompletionService.scala:65)
+2024.01.25 17:26:35 INFO  [error] 	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+2024.01.25 17:26:35 INFO  [error] 	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:572)
+2024.01.25 17:26:35 INFO  [error] 	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+2024.01.25 17:26:35 INFO  [error] 	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+2024.01.25 17:26:35 INFO  [error] 	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+2024.01.25 17:26:35 INFO  [error] 	at java.base/java.lang.Thread.run(Thread.java:1583)
+2024.01.25 17:26:35 INFO  [error] (update) sbt.librarymanagement.ResolveException: Error downloading org.apache.spark:spark-sql_2.13:3.0.0-preview2
+2024.01.25 17:26:35 INFO  [error]   Not found
+2024.01.25 17:26:35 INFO  [error]   Not found
+2024.01.25 17:26:35 INFO  [error]   not found: C:\Users\CYTech Student\.ivy2\localorg.apache.spark\spark-sql_2.13\3.0.0-preview2\ivys\ivy.xml
+2024.01.25 17:26:35 INFO  [error]   not found: https://repo1.maven.org/maven2/org/apache/spark/spark-sql_2.13/3.0.0-preview2/spark-sql_2.13-3.0.0-preview2.pom
+2024.01.25 17:26:35 INFO  [error] Total time: 1 s, completed 25 janv. 2024, 17:26:35
+2024.01.25 17:26:35 INFO  time: ran 'sbt bloopInstall' in 11s
+2024.01.25 17:26:35 ERROR sbt command failed: C:\Program Files\Java\jdk-21\bin\java.exe -Djline.terminal=jline.UnsupportedTerminal -Dsbt.log.noformat=true -Dfile.encoding=UTF-8 -jar C:\Users\CYTECH~1\AppData\Local\Temp\metals4314755614361681452\sbt-launch.jar -Dbloop.export-jar-classifiers=sources bloopInstall
+2024.01.25 17:26:35 INFO  Disconnecting from Bloop session...
+2024.01.25 17:26:35 INFO  Shut down connection with build server.
+2024.01.25 17:26:35 INFO  Shut down connection with build server.
+2024.01.25 17:26:35 INFO  Attempting to connect to the build server...
+2024.01.25 17:26:35 INFO  Bloop uses C:\Program Files\Java\jdk-21 defined at C:\Users\CYTech Student\.bloop\bloop.json
+2024.01.25 17:26:35 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at H:\Documents\Zy - Scala\spark_sql\.metals\bsp.trace.json or C:\Users\CYTech Student\AppData\Local\scalameta\metals\cache\bsp.trace.json
+2024.01.25 17:26:35 INFO  Attempting to connect to the build server...
+2024.01.25 17:26:35 INFO  Bloop uses C:\Program Files\Java\jdk-21 defined at C:\Users\CYTech Student\.bloop\bloop.json
+2024.01.25 17:26:35 INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at H:\Documents\Zy - Scala\spark_sql\project\.metals\bsp.trace.json or C:\Users\CYTech Student\AppData\Local\scalameta\metals\cache\bsp.trace.json
+2024.01.25 17:26:35 INFO  time: Connected to build server in 90ms
+2024.01.25 17:26:35 INFO  Connected to Build server: Bloop v1.5.13
+2024.01.25 17:26:37 INFO  time: indexed workspace in 1.76s
+2024.01.25 17:26:40 INFO  time: code lens generation in 2.47s
+2024.01.25 17:34:20 WARN  no build target for: H:\Documents\Zy - Scala\spark_sql\src\main\scala\Main.scala
+2024.01.25 17:34:26 WARN  no build target for: H:\Documents\Zy - Scala\spark_sql\src\main\scala\Main.scala
+2024.01.25 17:34:41 WARN  no build target for: H:\Documents\Zy - Scala\spark_sql\src\main\scala\SparkSQLApp.scala
+2024.01.25 17:41:14 WARN  no build target for: H:\Documents\Zy - Scala\spark_sql\src\main\scala\SparkSQLApp.scala
+janv. 25, 2024 5:45:00 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
+WARNING: Unmatched cancel notification for request id 213
+janv. 25, 2024 5:47:11 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTrace
+2024.01.25 17:47:36 WARN  no build target for: H:\Documents\Zy - Scala\spark_sql\src\main\scala\SparkSQLApp.scala
+2024.01.25 17:47:42 INFO  Shutting down server
+2024.01.25 17:47:42 INFO  shutting down Metals
+2024.01.25 17:47:42 INFO  Shut down connection with build server.
+2024.01.25 17:47:42 INFO  Shut down connection with build server.
+2024.01.25 17:47:42 INFO  Exiting server
