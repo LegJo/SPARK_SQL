@@ -46,6 +46,10 @@ object SparkSQLApp {
     var selectedData:Option[DataFrame] = SQLStatements.select("system.film");
     printDataFrame(selectedData);
 
+    val dfToInsert:DataFrame = Seq((777888, "Spark Le Film 2", "SparkGenre", 2025)).toDF("num_ind", "titre", "genre", "annee");
+    SQLStatements.insertInTable("dbo.film_test", dfToInsert);
+    selectedData = SQLStatements.selectTable("dbo.film_test");
+    printDataFrame(selectedData);
     val customDataFrame: Option[CustomDataFrame] = selectedData.map(df =>
       CustomDataFrame(
         df.collect().map(row =>
