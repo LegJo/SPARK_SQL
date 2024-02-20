@@ -1,5 +1,7 @@
 import org.apache.spark.sql.{DataFrame, SparkSession}
 import org.apache.spark.sql.functions._
+import org.apache.spark.sql.types.DataType
+
 import utils._
 import SparkSQLApp.{sparkSession}
 import configSQLServer.{jdbcUrl, connectionProperties}
@@ -22,173 +24,143 @@ object DataFrameFunctions {
   // colStats : Calculer des statistiques sur les colonnes numériques                                              *
   //                                                                                                               *
   // ***************************************************************************************************************
+  
 
-  def emptyDF(): DataFrame = {
+  def emptyDF: DataFrame = {
     sparkSession.emptyDataFrame
   }
 
   // Recuperer Dataframe depuis un Option[DataFrame]
   def getDFFromOptionDF(OptionDF: Option[DataFrame]): DataFrame = {
-    OptionDF.getOrElse(emptyDF())
+    OptionDF.getOrElse(emptyDF)
   }
 
-  def checkDataFrameAndExecute(
-      DataFrame: DataFrame,
-      action: => DataFrame
-  ): DataFrame = {
-    if (DataFrame.isEmpty) {
-      println("DataFrame is empty. Cannot perform operation.")
-      emptyDF() // Renvoyer l'instance actuelle de CustomDataFrame
-    } else {
-      action
-    }
+  def filter(df: DataFrame, conditions: String): DataFrame = {
+    handleException[DataFrame]({
+      df.filter(conditions)
+    },emptyDF)
   }
 
-  def filter(DataFrame: DataFrame, conditions: String): DataFrame = {
-    checkDataFrameAndExecute(DataFrame, DataFrame.filter(conditions))
+  def orderby(df: DataFrame, columns: String*): DataFrame = {
+    handleException[DataFrame]({
+      df.orderBy(columns.map(c => col(c)): _*)
+    },emptyDF)
   }
 
-  def orderby(dataFrame: DataFrame, columns: String*): DataFrame = {
-    checkDataFrameAndExecute(
-      dataFrame,
-      dataFrame.orderBy(columns.map(c => col(c)): _*)
-    )
-  }
+  def groupby(dataFrame: DataFrame, columns: String, aggregations: (String, String)*): DataFrame = {
+    handleException[DataFrame]({
+      val groupByColumns = columns.split(",")
+      val groupedDF =
+        dataFrame.groupBy(groupByColumns.head, groupByColumns.tail: _*)
 
-  def groupby(
-      dataFrame: DataFrame,
-      columns: String,
-      aggregations: (String, String)*
-  ): DataFrame = {
-    val groupByColumns = columns.split(",")
-    val groupedDF =
-      dataFrame.groupBy(groupByColumns.head, groupByColumns.tail: _*)
-
-    val aggExpressions = aggregations.map { case (col, aggType) =>
-      val aggExpr = aggType.toLowerCase match {
-        case "sum"   => sum(col)
-        case "avg"   => avg(col)
-        case "min"   => min(col)
-        case "max"   => max(col)
-        case "count" => count(col)
-        case _ =>
-          throw new IllegalArgumentException(
-            s"Unsupported aggregation type: $aggType"
-          )
+      val aggExpressions = aggregations.map { case (col, aggType) =>
+        val aggExpr = aggType.toLowerCase match {
+          case "sum"   => sum(col)
+          case "avg"   => avg(col)
+          case "min"   => min(col)
+          case "max"   => max(col)
+          case "count" => count(col)
+          case _ =>
+            throw new IllegalArgumentException(
+              s"Unsupported aggregation type: $aggType"
+            )
+        }
+        aggExpr.alias(s"${col}_${aggType}")
       }
-      aggExpr.alias(s"${col}_${aggType}")
-    }
 
-    val aggregatedDF =
-      groupedDF.agg(aggExpressions.head, aggExpressions.tail: _*)
+      val aggregatedDF =
+        groupedDF.agg(aggExpressions.head, aggExpressions.tail: _*)
 
-    checkDataFrameAndExecute(dataFrame, aggregatedDF)
+      aggregatedDF
+    },emptyDF)
   }
 
   def select(dataFrame: DataFrame, columns: String*): DataFrame = {
-    checkDataFrameAndExecute(dataFrame, dataFrame.select(columns.map(col): _*))
+    handleException[DataFrame]({
+      dataFrame.select(columns.map(col): _*)
+    },emptyDF)
   }
 
   def drop(dataFrame: DataFrame, columns: String*): DataFrame = {
-    checkDataFrameAndExecute(dataFrame, dataFrame.drop(columns: _*))
+    handleException[DataFrame]({
+      dataFrame.drop(columns: _*)
+    },emptyDF)
   }
 
   def distinct(dataFrame: DataFrame): DataFrame = {
-    checkDataFrameAndExecute(dataFrame, dataFrame.distinct())
+    handleException[DataFrame]({
+      dataFrame.distinct()
+    },emptyDF)
   }
 
   def union(dataFrame1: DataFrame, dataFrame2: DataFrame): DataFrame = {
-    checkDataFrameAndExecute(dataFrame1, dataFrame1.union(dataFrame2))
+    handleException[DataFrame]({
+      dataFrame1.union(dataFrame2)
+    },emptyDF)
   }
 
   def limit(dataFrame: DataFrame, numRows: Int): DataFrame = {
-    checkDataFrameAndExecute(dataFrame, dataFrame.limit(numRows))
+    handleException[DataFrame]({
+      dataFrame.limit(numRows)
+    },emptyDF)
   }
 
   def colStats(dataFrame: DataFrame): DataFrame = {
-    checkDataFrameAndExecute(dataFrame, dataFrame.describe())
+    handleException[DataFrame]({
+      dataFrame.describe()
+    },emptyDF)
   }
 
   def deleteRows(dataFrame: DataFrame, filterExpr: String): DataFrame = {
-    checkDataFrameAndExecute(dataFrame, filter(dataFrame, s"NOT ($filterExpr)"))
+    handleException[DataFrame]({
+      filter(dataFrame, s"NOT ($filterExpr)")
+    },dataFrame)
   }
 
   def truncate(df: DataFrame): DataFrame = {
-    df.filter("1=0")
+    handleException[DataFrame]({
+      df.filter("1=0")
+    },df)
   }
 
-  def leftJoin(
-      df1: DataFrame,
-      df2: DataFrame,
-      joinColumn: String
-  ): DataFrame = {
-    val resultDF = df1.join(df2, joinColumn, "left")
-    resultDF
+  def leftJoin(df1: DataFrame, df2: DataFrame, joinColumn: String): DataFrame = {
+    handleException[DataFrame]({
+      df1.join(df2, joinColumn, "left")
+    },emptyDF)
   }
 
-  def rightJoin(
-      df1: DataFrame,
-      df2: DataFrame,
-      joinColumn: String
-  ): DataFrame = {
-    val resultDF = df1.join(df2, joinColumn, "right")
-    resultDF
+  def rightJoin(df1: DataFrame, df2: DataFrame, joinColumn: String): DataFrame = {
+    handleException[DataFrame]({
+      df1.join(df2, joinColumn, "right")
+    },emptyDF)
   }
 
-  def innerJoin(
-      df1: DataFrame,
-      df2: DataFrame,
-      joinColumn: String
-  ): DataFrame = {
-    val resultDF = df1.join(
-      df2,
-      joinColumn,
-      "inner"
-    ) // pas necessaire de préciser "inner" c'est par defaut
-    resultDF
+  def innerJoin(df1: DataFrame, df2: DataFrame, joinColumn: String): DataFrame = {
+    handleException[DataFrame]({
+      df1.join(df2, joinColumn, "inner") // pas necessaire de préciser "inner" c'est par defaut
+    },emptyDF)
   }
 
-  def outerJoin(
-      df1: DataFrame,
-      df2: DataFrame,
-      joinColumn: String
-  ): DataFrame = {
-    val resultDF = df1.join(df2, joinColumn, "outer")
-    resultDF
+  def outerJoin(df1: DataFrame, df2: DataFrame,joinColumn: String): DataFrame = {
+    handleException[DataFrame]({
+      df1.join(df2, joinColumn, "outer")
+    },emptyDF)
   }
 
-  def renameColumn(
-      df: DataFrame,
-      oldColumnName: String,
-      newColumnName: String
-  ): DataFrame = {
-    // Utiliser withColumnRenamed pour renommer la colonne
-    val renamedDF = df.withColumnRenamed(oldColumnName, newColumnName)
-    renamedDF
+  def renameColumn(df: DataFrame, oldColumnName: String, newColumnName: String): DataFrame = {
+    handleException[DataFrame]({
+      df.withColumnRenamed(oldColumnName, newColumnName)
+    },df)
   }
 
-  // def convertColumn(df: DataFrame, columnName: String, newType: DataType): DataFrame = {
-  //     try {
-  //     // Utiliser withColumn et cast pour changer le type de la colonne
-  //     val updatedDF = df.withColumn(columnName, col(columnName).cast(newType))
-  //     updatedDF
-  //     } catch {
-  //     case e: Exception =>
-  //         // Gérer l'erreur de conversion de type
-  //         println(s"Erreur lors de la conversion de la colonne $columnName : ${e.getMessage}")
-  //         df // Retourner le DataFrame d'origine en cas d'erreur
-  //     }
-  // }
+  def convertColumn(df: DataFrame, columnName: String, newType: DataType): DataFrame = {
+    handleException[DataFrame]({
+      df.withColumn(columnName, col(columnName).cast(newType))
+    },df)
+  }
 
   // Fonction qui permet de faire des Aggregation de column
-  def computeAggregate(
-      df: DataFrame,
-      columnName: String,
-      operation: String
-  ): DataFrame = {
-    val spark = df.sparkSession
-    import spark.implicits._
-
+  def computeAggregate(df: DataFrame, columnName: String, operation: String): DataFrame = {
     val aggOperation = operation.toLowerCase match {
       case "sum"     => sum(col(columnName))
       case "count"   => count(col(columnName))
@@ -198,8 +170,9 @@ object DataFrameFunctions {
       case _ =>
         throw new IllegalArgumentException("Opération non prise en charge")
     }
-
-    df.agg(aggOperation.as(operation))
+    handleException[DataFrame]({
+       df.agg(aggOperation.as(operation))
+    },df)   
   }
 
 }

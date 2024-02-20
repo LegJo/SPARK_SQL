@@ -1,0 +1,14 @@
+object configSQLServer {
+  private val SQLServerDriver:String = "oracle.jdbc.driver.OracleDriver"
+  private val jdbcHostname:String = "localhost";
+  private val jdbcPort:Int = 1521; 
+  private val jdbcSID:String = "xe"; // SID de la base de données Oracle
+  private val jdbcUsername:String = "system";
+  private val jdbcPassword:String = "dbadmin";
+  Class.forName(SQLServerDriver)
+  val jdbcUrl:String = s"jdbc:oracle:thin:@${jdbcHostname}:${jdbcPort}:${jdbcSID}"
+  val connectionProperties:Properties = new Properties() {{
+    put("user", jdbcUsername)
+    put("password", jdbcPassword)
+  }};
+}
