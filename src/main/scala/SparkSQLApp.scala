@@ -39,12 +39,12 @@ object SparkSQLApp {
     printLine();
 
     //SQL Statements Exemples 
-    val dfOfTableToCreate:DataFrame = Seq((777, "Spark Le Film", "SparkGenre", 2025)).toDF("num_ind", "titre", "genre", "annee");
-    SQLStatements.createTable("dbo.film_test", dfOfTableToCreate);
-    selectedData = SQLStatements.selectTable("dbo.film_test");
-    
     var selectedData:Option[DataFrame] = SQLStatements.select("system.film");
     printDataFrame(selectedData);
+    
+    val dfOfTableToCreate:DataFrame = Seq((777, "Spark Le Film", "SparkGenre", 2025)).toDF("num_ind", "titre", "genre", "annee");
+    SQLStatements.createTable("system.film_test", dfOfTableToCreate);
+    selectedData = SQLStatements.selectTable("system.film_test");    
 
     val dfToInsert:DataFrame = Seq((777888, "Spark Le Film 2", "SparkGenre", 2025)).toDF("num_ind", "titre", "genre", "annee");
     SQLStatements.insertInTable("dbo.film_test", dfToInsert);
