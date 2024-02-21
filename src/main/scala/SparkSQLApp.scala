@@ -45,7 +45,6 @@ object SparkSQLApp {
     // Récupérer le DataFrame depuis la base de données
     val selectedData: Option[DataFrame] = SQLStatements.selectTable("system.film")
     val selectedDataFromJSON: Option[DataFrame] = createDataFrameFromJson(".\\src\\data\\data.json")
-    printDataFrame(getDFFromOptionDF(selectedDataFromJSON))
 
     // Filtrer les données si elles sont présentes, sinon renvoyer une DataFrame vide
     val DF:DataFrame = DataFrameFunctions.getDFFromOptionDF(selectedDataFromJSON)
@@ -82,9 +81,9 @@ object SparkSQLApp {
     // printDataFrame(deleteRowDataFrame) 
 
     // Tester la fonction addColumn
-    val valuesToAdd = Seq("value1", "value2", "value3")
-    val dfWithNewColumn = addColumn(DF, "newColumn", StringType, valuesToAdd)
-    printDataFrame(dfWithNewColumn)
+    //val valuesToAdd = Seq("value1", "value2", "value3")
+    //val dfWithNewColumn = addColumn(DF, "newColumn", StringType, valuesToAdd)
+    //printDataFrame(dfWithNewColumn)
 
     // Tester la fonction createDataFrameFromJson
     // val jsonPath = ".\\src\\data\\data.json"
