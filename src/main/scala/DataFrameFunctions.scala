@@ -1,6 +1,10 @@
 import org.apache.spark.sql.{DataFrame, SparkSession}
 import org.apache.spark.sql.functions._
 import org.apache.spark.sql.types.DataType
+import org.apache.spark.sql.{Row, SparkSession}
+import org.apache.spark.sql.types.{StructField, StructType, StringType}
+import org.apache.spark.sql.functions.lit
+import org.apache.spark.sql.Column
 
 import utils._
 import SparkSQLApp.{sparkSession}
@@ -22,8 +26,12 @@ object DataFrameFunctions {
   // union : Effectue l'union avec un autre DataFrame, ajoutant toutes les lignes                                  *
   // limit : Limite le DataFrame aux premières 'n' lignes                                                          *
   // colStats : Calculer des statistiques sur les colonnes numériques                                              *
+  // addColumn : Ajoute une colonne au DataFrame                                                                   *
+  // createDataFrameFromJson : Crée un DataFrame à partir d'un fichier JSON                                        *
+  // createDataFrameFromSeq : Crée un DataFrame à partir d'une séquence de maps                                    *
   //                                                                                                               *
   // ***************************************************************************************************************
+
   
 
   def emptyDF: DataFrame = {
@@ -175,4 +183,30 @@ object DataFrameFunctions {
     },df)   
   }
 
+   // Fonction pour ajouter une colonne au DataFrame
+  def addColumn(dataFrame: DataFrame, columnName: String, columnType: DataType, values: Seq[Any]): DataFrame = {
+    handleException[DataFrame]({
+        val litValues = values.map(lit(_))
+        val newColumn = litValues.zipWithIndex.foldLeft(dataFrame)((accDF, valueWithIndex) => {
+        val (value, index) = valueWithIndex
+        accDF.withColumn(columnName + index, lit(value).cast(columnType))
+        })
+        newColumn
+    }, dataFrame)
+  }
+
+
+  // Fonction pour créer un DataFrame à partir d'un fichier JSON
+  def createDataFrameFromJson(jsonPath: String): Option[DataFrame] = {
+    handleException[Option[DataFrame]]({
+      Some(sparkSession.read.option("mode", "DROPMALFORMED").json(jsonPath))
+    }, None)
+  }
+
+  // Fonction pour créer un DataFrame à partir d'une séquence de maps
+  def createDataFrameFromSeq(seq: Seq[Product], schema: StructType): DataFrame = {
+    val spark = SparkSession.builder().getOrCreate()
+    val rdd = spark.sparkContext.parallelize(seq.map(Row.fromTuple))
+    spark.createDataFrame(rdd, schema)
+  }
 }
