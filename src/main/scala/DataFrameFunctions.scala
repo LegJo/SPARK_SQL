@@ -187,7 +187,10 @@ object DataFrameFunctions {
   def addColumn(dataFrame: DataFrame, columnName: String, columnType: DataType, values: Seq[Any]): DataFrame = {
     handleException[DataFrame]({
         val litValues = values.map(lit(_))
-        val newColumn = litValues.foldLeft(dataFrame)((accDF, value) => accDF.withColumn(columnName, lit(value).cast(columnType)))
+        val newColumn = litValues.zipWithIndex.foldLeft(dataFrame)((accDF, valueWithIndex) => {
+        val (value, index) = valueWithIndex
+        accDF.withColumn(columnName + index, lit(value).cast(columnType))
+        })
         newColumn
     }, dataFrame)
   }
@@ -196,17 +199,14 @@ object DataFrameFunctions {
   // Fonction pour créer un DataFrame à partir d'un fichier JSON
   def createDataFrameFromJson(jsonPath: String): Option[DataFrame] = {
     handleException[Option[DataFrame]]({
-      Some(sparkSession.read.json(jsonPath))
+      Some(sparkSession.read.option("mode", "DROPMALFORMED").json(jsonPath))
     }, None)
   }
 
   // Fonction pour créer un DataFrame à partir d'une séquence de maps
-  def createDataFrameFromSeq(data: Seq[Map[String, Any]]): Option[DataFrame] = {
-    handleException[Option[DataFrame]]({
-      val structFields: Seq[StructField] = data.headOption.map(_.keys.map(fieldName => StructField(fieldName, StringType)).toSeq).getOrElse(Seq.empty)
-      val rows: Seq[Row] = data.map(row => Row.fromSeq(row.values.toSeq))
-      val newDataFrame = sparkSession.createDataFrame(sparkSession.sparkContext.parallelize(rows), StructType(structFields))
-      Some(newDataFrame)
-    }, None)
+  def createDataFrameFromSeq(seq: Seq[Product], schema: StructType): DataFrame = {
+    val spark = SparkSession.builder().getOrCreate()
+    val rdd = spark.sparkContext.parallelize(seq.map(Row.fromTuple))
+    spark.createDataFrame(rdd, schema)
   }
 }
