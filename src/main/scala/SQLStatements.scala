@@ -79,11 +79,12 @@ object SQLStatements {
    */
   def truncateTable(tableName: String): Unit = {
     handleException[Unit]({
-      var df:DataFrame = getDFFromOptionDF(selectTable(tableName))
+      var df: DataFrame = getDFFromOptionDF(selectTable(tableName))
       truncate(df)
       overwriteTable(tableName, df)
-    },())
+    }, ())
   }
+
 
   /**
    * Met a jour des donnees dans une table de la base de donnees.

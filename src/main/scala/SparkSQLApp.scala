@@ -76,7 +76,34 @@ object SparkSQLApp {
     printDataFrame(colStatsDataFrame) 
 
     val deleteRowDataFrame: DataFrame = DataFrameFunctions.deleteRows(DF,"ANNEE = 2002")
-    printDataFrame(deleteRowDataFrame) 
+    printDataFrame(deleteRowDataFrame)
+
+    val selectedTableDataFrame: Option[DataFrame] = SQLStatements.selectTable("system.film")
+    printDataFrame(getDFFromOptionDF(selectedTableDataFrame))
+    val selectedTableDataFrameWithFilter: Option[DataFrame] = SQLStatements.selectTable("system.film", "titre", "ANNEE > 2000")
+    printDataFrame(getDFFromOptionDF(selectedTableDataFrameWithFilter))
+
+    val newDF = Seq(
+      (15, 20 , "Interstellar", "Science Fiction", 2016),
+      (16, 21 , "Inception", "Science Fiction", 2010)
+    ).toDF("NUM_FILM", "NUM_IND", "TITRE", "GENRE", "ANNEE")
+    SQLStatements.createTable("system.newtabless", newDF)
+    printDataFrame(getDFFromOptionDF(SQLStatements.selectTable("system.newtabless")))
+
+    val anotherDF = Seq(
+      (14, 19 , "Interstellar1", "Science Fiction", 2014)
+    ).toDF("NUM_FILM", "NUM_IND", "TITRE", "GENRE", "ANNEE")
+    SQLStatements.overwriteTable("system.newtabless", anotherDF)
+    printDataFrame(getDFFromOptionDF(SQLStatements.selectTable("system.newtabless")))
+
+    val another2DF = Seq(
+      (17, 22 , "Interstellar2", "Science Fiction", 2018)
+    ).toDF("NUM_FILM", "NUM_IND", "TITRE", "GENRE", "ANNEE")
+    SQLStatements.insertInTable("system.newtabless", another2DF)
+    printDataFrame(getDFFromOptionDF(SQLStatements.selectTable("system.newtabless")))
+
+    SQLStatements.truncateTable("system.newtabless")
+    printDataFrame(getDFFromOptionDF(SQLStatements.selectTable("system.newtabless")))
 
     println("Stopping Spark session...")
     sparkSession.stop()
