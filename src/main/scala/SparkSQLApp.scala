@@ -115,23 +115,23 @@ object SparkSQLApp {
     //   (15, 20 , "Interstellar", "Science Fiction", 2016),
     //   (16, 21 , "Inception", "Science Fiction", 2010)
     // ).toDF("NUM_FILM", "NUM_IND", "TITRE", "GENRE", "ANNEE")
-    // SQLStatements.createTable("system.newtabless", newDF)
-    // printDataFrame(getDFFromOptionDF(SQLStatements.selectTable("system.newtabless")))
+    // SQLStatements.createTable("system.newtable", newDF)
+    // printDataFrame(getDFFromOptionDF(SQLStatements.selectTable("system.newtable")))
 
     // val anotherDF = Seq(
     //   (14, 19 , "Interstellar1", "Science Fiction", 2014)
     // ).toDF("NUM_FILM", "NUM_IND", "TITRE", "GENRE", "ANNEE")
-    // SQLStatements.overwriteTable("system.newtabless", anotherDF)
-    // printDataFrame(getDFFromOptionDF(SQLStatements.selectTable("system.newtabless")))
+    // SQLStatements.overwriteTable("system.newtable", anotherDF)
+    // printDataFrame(getDFFromOptionDF(SQLStatements.selectTable("system.newtable")))
 
     // val another2DF = Seq(
     //   (17, 22 , "Interstellar2", "Science Fiction", 2018)
     // ).toDF("NUM_FILM", "NUM_IND", "TITRE", "GENRE", "ANNEE")
-    // SQLStatements.insertInTable("system.newtabless", another2DF)
-    // printDataFrame(getDFFromOptionDF(SQLStatements.selectTable("system.newtabless")))
+    // SQLStatements.insertInTable("system.newtable", another2DF)
+    // printDataFrame(getDFFromOptionDF(SQLStatements.selectTable("system.newtable")))
 
-    // SQLStatements.truncateTable("system.newtabless")
-    // printDataFrame(getDFFromOptionDF(SQLStatements.selectTable("system.newtabless")))
+    // SQLStatements.truncateTable("system.newtable")
+    // printDataFrame(getDFFromOptionDF(SQLStatements.selectTable("system.newtable")))
 
     println("Stopping Spark session...")
     sparkSession.stop()
