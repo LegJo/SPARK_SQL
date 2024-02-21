@@ -11,7 +11,7 @@ object configSQLServer {
   private val jdbcPort:Int = 1521; 
   private val jdbcSID:String = "xe"; // SID de la base de données Oracle
   private val jdbcUsername:String = "system";
-  private val jdbcPassword:String = "dbadmin";
+  private val jdbcPassword:String = "root";
   Class.forName(SQLServerDriver)
   val jdbcUrl:String = s"jdbc:oracle:thin:@${jdbcHostname}:${jdbcPort}:${jdbcSID}"
   val connectionProperties:Properties = new Properties() {{
@@ -41,7 +41,7 @@ object SparkSQLApp {
     println(s"Connection: ${connectionProperties}")
 
     // Récupérer le DataFrame depuis la base de données
-    val selectedData: Option[DataFrame] = SQLStatements.selectTable("dbo.film")
+    val selectedData: Option[DataFrame] = SQLStatements.selectTable("system.film")
     val selectedDataFromJSON: Option[DataFrame] = utils.loadJSON(".\\src\\data\\data.json")
 
     // Filtrer les données si elles sont présentes, sinon renvoyer une DataFrame vide
