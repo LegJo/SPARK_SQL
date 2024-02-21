@@ -14,7 +14,7 @@ object configSQLServer {
   private val jdbcSID:String = "xe"; // SID de la base de données Oracle
   private val jdbcUsername:String = "system";
   private val jdbcPassword:String = "Change le mot de passe";
-  Class.forName("oracle.jdbc.driver.OracleDriver")
+  Class.forName(SQLServerDriver)
   val jdbcUrl:String = s"jdbc:oracle:thin:@${jdbcHostname}:${jdbcPort}:${jdbcSID}"
   val connectionProperties:Properties = new Properties() {{
     put("user", jdbcUsername)
