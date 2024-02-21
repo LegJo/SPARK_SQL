@@ -1,29 +1,12 @@
 import java.util.Properties
-import java.sql.SQLException
 import org.apache.spark.sql.{DataFrame, SparkSession}
 
 import utils._
+import DataFrameFunctions._
 import SparkSQLApp.{sparkSession}
 import configSQLServer.{jdbcUrl, connectionProperties} 
 
 object SQLStatements {
-  /**
-   * Gère les exceptions et les imprime avec des informations contextuelles.
-   *
-   * @param operation l'operation qui a provoque l'exception
-   * @param tableName le nom de la table sur laquelle l'operation a ete effectuee
-   * @param ex l'exception levee
-   */
-  private def handleException(operation: String, tableName: String, ex: Exception): Unit = {
-    ex match {
-      case sqlEx: SQLException =>
-        println(s"SQL ERROR : Erreur SQL lors de $operation sur la table $tableName : ${sqlEx.getMessage}")
-      case _ =>
-        println(s"ERROR : Une erreur inattendue s'est produite lors de $operation sur la table $tableName : ${ex.getMessage}")
-    }
-    printLine();
-  }
-
   /**
    * Selectionne des donnees depuis une table dans la base de donnees.
    *
@@ -33,16 +16,16 @@ object SQLStatements {
    * @return une option de DataFrame contenant les donnees selectionnees, ou None en cas d'erreur
    */
   def selectTable(tableName: String, columns:String = "", filter: String = ""): Option[DataFrame] = {
-    try {
-      val df:DataFrame = {
-        if(!columns.nonEmpty) {
-          if(!filter.nonEmpty) {
+    handleException[Option[DataFrame]]({
+      val df: DataFrame = {
+        if (!columns.nonEmpty) {
+          if (!filter.nonEmpty) {
             sparkSession.read.jdbc(jdbcUrl, tableName, connectionProperties)
           } else {
             sparkSession.read.jdbc(jdbcUrl, s"(SELECT * FROM $tableName WHERE $filter) tmp", connectionProperties)
           }
         } else {
-          if(!filter.nonEmpty) {
+          if (!filter.nonEmpty) {
             sparkSession.read.jdbc(jdbcUrl, s"(SELECT $columns FROM $tableName) tmp", connectionProperties)
           } else {
             sparkSession.read.jdbc(jdbcUrl, s"(SELECT $columns FROM $tableName WHERE $filter) tmp", connectionProperties)
@@ -50,11 +33,7 @@ object SQLStatements {
         }
       }
       Some(df)
-    } catch {
-      case ex: Exception =>
-        handleException("la selection des donnees depuis", tableName, ex)
-        None
-    }
+    },None)
   }
 
   /**
@@ -64,12 +43,9 @@ object SQLStatements {
    * @param data le DataFrame contenant les donnees a inserer
    */
   def insertInTable(tableName: String, data: DataFrame): Unit = {
-    try {
+    handleException[Unit]({
       data.write.mode("append").jdbc(jdbcUrl, tableName, connectionProperties)
-    } catch {
-      case ex: Exception =>
-        handleException("l'insertion des donnees dans", tableName, ex)
-    }
+    },())
   }
 
   /**
@@ -79,27 +55,21 @@ object SQLStatements {
    * @param df le dataframe contennant le schema et le contenue de la table
    */
   def createTable(tableName: String, df: DataFrame): Unit = {
-    try {
+    handleException[Unit]({
       df.write.jdbc(jdbcUrl, tableName, connectionProperties)
-    } catch {
-      case ex: Exception =>
-        handleException("la creation de la table", tableName, ex)
-    }
+    },())
   }
 
   /**
-   * Cree une nouvelle table dans la base de donnees.
+   * Cree une nouvelle table dans la base de donnees mais overwrite la table si elle existe déjà.
    *
    * @param tableName le nom de la table a creer
    * @param schema le schema de la table a creer
    */
   def overwriteTable(tableName: String, df: DataFrame): Unit = {
-    try {
+    handleException[Unit]({
       df.write.mode("overwrite").jdbc(jdbcUrl, tableName, connectionProperties)
-    } catch {
-      case ex: Exception =>
-        handleException("la creation de la table", tableName, ex)
-    }
+    },())
   }
 
   /**
@@ -108,7 +78,11 @@ object SQLStatements {
    * @param tableName le nom de la table a vider
    */
   def truncateTable(tableName: String): Unit = {
-   
+    handleException[Unit]({
+      var df:DataFrame = getDFFromOptionDF(selectTable(tableName))
+      truncate(df)
+      overwriteTable(tableName, df)
+    },())
   }
 
   /**
