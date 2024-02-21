@@ -42,18 +42,6 @@ object utils {
       df.show();
       printLine();    
   }
-
-  def loadJSON(filePath: String): Option[DataFrame] = {
-      try {
-          val jsonDF = sparkSession.read.option("mode", "DROPMALFORMED").json(filePath)
-          Some(jsonDF)
-      } catch {
-          case e: Exception =>
-          println(s"An error occurred while loading JSON file: ${e.getMessage}")
-          None
-      }
-  }
-
   
   def currentFunctionName: String = {
     val currentMethodName = Thread.currentThread.getStackTrace()(2).getMethodName
