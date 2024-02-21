@@ -8,6 +8,7 @@ import org.apache.spark.sql.types.IntegerType
 // !!!!!! To run sbt server with jdk11 : sbt -java-home "C:\Program Files\Java\jdk-11"  !!!!! 
 
 object configSQLServer {
+  private val SQLServerDriver:String = "oracle.jdbc.driver.OracleDriver"
   private val jdbcHostname:String = "localhost";
   private val jdbcPort:Int = 1521; 
   private val jdbcSID:String = "xe"; // SID de la base de données Oracle
