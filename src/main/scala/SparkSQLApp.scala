@@ -106,6 +106,8 @@ object SparkSQLApp {
 
 
 
+    // Partie JDBC
+
     // val selectedTableDataFrame: Option[DataFrame] = SQLStatements.selectTable("system.film")
     // printDataFrame(getDFFromOptionDF(selectedTableDataFrame))
     // val selectedTableDataFrameWithFilter: Option[DataFrame] = SQLStatements.selectTable("system.film", "titre", "ANNEE > 2000")
