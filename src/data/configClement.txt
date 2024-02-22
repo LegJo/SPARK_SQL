@@ -5,10 +5,12 @@ object configSQLServer {
   private val jdbcSID:String = "xe"; // SID de la base de données Oracle
   private val jdbcUsername:String = "system";
   private val jdbcPassword:String = "dbadmin";
+  val schema = jdbcUsername
   Class.forName(SQLServerDriver)
   val jdbcUrl:String = s"jdbc:oracle:thin:@${jdbcHostname}:${jdbcPort}:${jdbcSID}"
   val connectionProperties:Properties = new Properties() {{
     put("user", jdbcUsername)
     put("password", jdbcPassword)
   }};
+  val connection:Connection = DriverManager.getConnection(jdbcUrl, connectionProperties)
 }

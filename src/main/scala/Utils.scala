@@ -1,6 +1,7 @@
 import org.apache.spark.sql.{DataFrame, SparkSession}
 import java.sql.SQLException
 import java.io.{FileOutputStream, PrintStream}
+import org.apache.commons.lang3.exception.ExceptionUtils
 
 import SparkSQLApp.{sparkSession}
 import configSQLServer.{jdbcUrl, connectionProperties}
@@ -17,18 +18,17 @@ object utils {
       function
     } catch {
       case ex: Exception => {
-        var errMsg:String = "\u001b[31m"
-        ex match {
-          case sqlEx: SQLException =>
-            errMsg += s"SQL ERROR : Erreur SQL lors de $function : ${sqlEx.getMessage}" + "\u001b[0m"
-          case analysisEx: org.apache.spark.sql.AnalysisException =>
-            errMsg += s"ANALYSIS ERROR : Erreur d'Analyse lors de $function : ${analysisEx.getMessage}" + "\u001b[0m"
-          case _ =>
-            errMsg += s"ERROR : Une erreur inattendue s'est produite lors de $function : ${ex.getMessage}" + "\u001b[0m"
-        }
-        println(errMsg)
-        writeInLogFile(errMsg)
+        var errMsg:String = getErrorMessage(ex, currentFunctionName)
+        var datetime:String = getCurrentDateTimeStr()
+        printColoredText("red", errMsg)
         printLine();
+        var logLine:String = "> " + datetime + " : " + errMsg
+        var line:String = "-".repeat(logLine.length())
+        writeInLogFile(line)
+        writeInLogFile(logLine)
+        writeInLogFile(line)
+        writeInLogFile(ExceptionUtils.getStackTrace(ex))
+        writeInLogFile(line)
         default
       }
     }
@@ -44,7 +44,7 @@ object utils {
   }
   
   def currentFunctionName: String = {
-    val currentMethodName = Thread.currentThread.getStackTrace()(2).getMethodName
+    val currentMethodName = Thread.currentThread.getStackTrace()(3).getMethodName
     currentMethodName
   }
 
@@ -54,5 +54,39 @@ object utils {
     val printStream = new PrintStream(fileStream)
     printStream.println(message)
     printStream.close()
+  }
+
+  def getErrorMessage(ex: Exception, functionName:String): String = {
+    ex match {
+      case sqlEx: SQLException =>
+        s"SQL ERROR : Erreur SQL lors de $functionName : ${sqlEx.getMessage}"
+      case analysisEx: org.apache.spark.sql.AnalysisException =>
+        s"ANALYSIS ERROR : Erreur d'Analyse lors de $functionName : ${analysisEx.getMessage}"
+      case _ =>
+        s"ERROR : Une erreur inattendue s'est produite lors de $functionName : ${ex.getMessage}"
+    }
+  }
+
+  def getCurrentDateTimeStr():String = {
+    val formattedDateTime = java.time.LocalDateTime.now().format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+    formattedDateTime
+  }
+
+  def getColorCode(color: String): String = color.toLowerCase match {
+    case "black" => "30m"
+    case "red" => "31m"
+    case "green" => "32m"
+    case "yellow" => "33m"
+    case "blue" => "34m"
+    case "magenta" => "35m"
+    case "cyan" => "36m"
+    case "white" => "37m"
+    case _ => "39m" // Par défaut, la couleur par défaut est utilisée
+  }
+
+  def printColoredText(color: String, msg: String): Unit = {
+    val colorCode = getColorCode(color)
+    val coloredMsg = s"\u001b[$colorCode$msg\u001b[0m"
+    println(coloredMsg)
   }
 }

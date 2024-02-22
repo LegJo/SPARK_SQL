@@ -1,10 +1,17 @@
-import org.apache.spark.sql.{DataFrame, SparkSession}
+import org.apache.spark.sql.{SparkSession, DataFrame, Column, Row, SaveMode}
 import org.apache.spark.sql.functions._
+<<<<<<< Updated upstream
 import org.apache.spark.sql.types.DataType
 import org.apache.spark.sql.{Row, SparkSession}
 import org.apache.spark.sql.types.{StructField, StructType, StringType}
 import org.apache.spark.sql.functions.lit
 import org.apache.spark.sql.Column
+=======
+import org.apache.spark.sql.types._
+import java.sql.{DriverManager, Connection, Statement, ResultSet}
+import scala.collection.JavaConverters._
+
+>>>>>>> Stashed changes
 
 import utils._
 import SparkSQLApp.{sparkSession}
@@ -16,7 +23,6 @@ object DataFrameFunctions {
   //                                                                                                               *
   // emptyDF : Crée un DataFrame vide                                                                              *
   // getDFFromOptionDF : Récupère un DataFrame à partir d'un Option[DataFrame]                                     *
-  // checkDataFrameAndExecute : Vérifie si le DataFrame n'est pas vide avant d'exécuter une action                 *
   // filter : Filtrer les données selon une condition sur une colonne donnée                                       *
   // orderBy : Trie les lignes du DataFrame en fonction des colonnes spécifiées                                    *
   // groupBy : Regroupe les lignes du DataFrame en fonction des valeurs des colonnes spécifiées                    *
@@ -26,9 +32,17 @@ object DataFrameFunctions {
   // union : Effectue l'union avec un autre DataFrame, ajoutant toutes les lignes                                  *
   // limit : Limite le DataFrame aux premières 'n' lignes                                                          *
   // colStats : Calculer des statistiques sur les colonnes numériques                                              *
+<<<<<<< Updated upstream
   // addColumn : Ajoute une colonne au DataFrame                                                                   *
   // createDataFrameFromJson : Crée un DataFrame à partir d'un fichier JSON                                        *
   // createDataFrameFromSeq : Crée un DataFrame à partir d'une séquence de maps                                    *
+=======
+  // printSchema : affiche le Schema du dataframe                                                                  *
+  // addColumn : Ajoute une colonne au DataFrame                                                                   *
+  // createDataFrameFromJson : Crée un DataFrame à partir d'un fichier JSON                                        *
+  // createDataFrameFromSeq : Crée un DataFrame à partir d'une séquence de maps                                    *
+  // createDataFrameFromResultSet : Fonction pour créer un DataFrame à partir d'un ResultSet                       *
+>>>>>>> Stashed changes
   //                                                                                                               *
   // ***************************************************************************************************************
 
@@ -133,26 +147,47 @@ object DataFrameFunctions {
 
   def leftJoin(df1: DataFrame, df2: DataFrame, joinColumn: String): DataFrame = {
     handleException[DataFrame]({
-      df1.join(df2, joinColumn, "left")
-    },emptyDF)
+      val joined = df1.join(df2, joinColumn, "left")
+      if (joined.columns.contains(joinColumn)) {
+        joined.select(df1.columns.map(col): _*)
+      } else {
+        df1
+      }
+    }, df1)
   }
+
 
   def rightJoin(df1: DataFrame, df2: DataFrame, joinColumn: String): DataFrame = {
     handleException[DataFrame]({
-      df1.join(df2, joinColumn, "right")
-    },emptyDF)
+      val joined = df1.join(df2, joinColumn, "right")
+      if (joined.columns.contains(joinColumn)) {
+        joined.select(df1.columns.map(col): _*)
+      } else {
+        df1
+      }
+    }, df1)
   }
 
   def innerJoin(df1: DataFrame, df2: DataFrame, joinColumn: String): DataFrame = {
     handleException[DataFrame]({
-      df1.join(df2, joinColumn, "inner") // pas necessaire de préciser "inner" c'est par defaut
-    },emptyDF)
+      val joined = df1.join(df2, joinColumn, "inner")
+      if (joined.columns.contains(joinColumn)) {
+        joined.select(df1.columns.map(col): _*)
+      } else {
+        df1
+      }
+    }, df1)
   }
 
-  def outerJoin(df1: DataFrame, df2: DataFrame,joinColumn: String): DataFrame = {
+  def outerJoin(df1: DataFrame, df2: DataFrame, joinColumn: String): DataFrame = {
     handleException[DataFrame]({
-      df1.join(df2, joinColumn, "outer")
-    },emptyDF)
+      val joined = df1.join(df2, joinColumn, "outer")
+      if (joined.columns.contains(joinColumn)) {
+        joined.select(df1.columns.map(col): _*)
+      } else {
+        df1
+      }
+    }, df1)
   }
 
   def renameColumn(df: DataFrame, oldColumnName: String, newColumnName: String): DataFrame = {
@@ -183,7 +218,23 @@ object DataFrameFunctions {
     },df)   
   }
 
+<<<<<<< Updated upstream
    // Fonction pour ajouter une colonne au DataFrame
+=======
+  def updateRows(df: DataFrame, condition: Column, columnName: String, newValue: Any): DataFrame = {
+    handleException[DataFrame]({
+        df.withColumn(columnName, when(condition, lit(newValue)).otherwise(col(columnName)))
+    },df)
+  }
+  
+  def printSchema(df:DataFrame):Unit = {
+    handleException[Unit]({
+      df.printSchema()
+    },())
+  }
+
+  // Fonction pour ajouter une colonne au DataFrame
+>>>>>>> Stashed changes
   def addColumn(dataFrame: DataFrame, columnName: String, columnType: DataType, values: Seq[Any]): DataFrame = {
     handleException[DataFrame]({
         val litValues = values.map(lit(_))
@@ -195,8 +246,12 @@ object DataFrameFunctions {
     }, dataFrame)
   }
 
+<<<<<<< Updated upstream
 
   // Fonction pour créer un DataFrame à partir d'un fichier JSON
+=======
+   // Fonction pour créer un DataFrame à partir d'un fichier JSON
+>>>>>>> Stashed changes
   def createDataFrameFromJson(jsonPath: String): Option[DataFrame] = {
     handleException[Option[DataFrame]]({
       Some(sparkSession.read.option("mode", "DROPMALFORMED").json(jsonPath))
@@ -205,8 +260,29 @@ object DataFrameFunctions {
 
   // Fonction pour créer un DataFrame à partir d'une séquence de maps
   def createDataFrameFromSeq(seq: Seq[Product], schema: StructType): DataFrame = {
+<<<<<<< Updated upstream
     val spark = SparkSession.builder().getOrCreate()
     val rdd = spark.sparkContext.parallelize(seq.map(Row.fromTuple))
     spark.createDataFrame(rdd, schema)
+=======
+    handleException[DataFrame]({
+        val rdd = sparkSession.sparkContext.parallelize(seq.map(Row.fromTuple))
+        sparkSession.createDataFrame(rdd, schema)
+    },emptyDF)
+  }
+
+  
+  // Fonction pour créer un DataFrame à partir d'un ResultSet
+  def createDataFrameFromResultSet(resultSet: ResultSet): DataFrame = {
+    handleException[DataFrame]({
+      val metaData = resultSet.getMetaData
+      val schema = StructType((1 to metaData.getColumnCount).map(i => StructField(metaData.getColumnName(i), DataTypes.StringType)))
+      val values = (1 to metaData.getColumnCount).map(resultSet.getObject)
+      val row = Row.fromSeq(values)
+      val rows = Seq(row).asJava // Convertir la séquence de lignes en une liste de lignes
+      val df = sparkSession.createDataFrame(rows, schema)
+      df
+    }, emptyDF)
+>>>>>>> Stashed changes
   }
 }
