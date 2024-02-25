@@ -4,7 +4,7 @@ import org.apache.spark.sql.{SparkSession, DataFrame, Column, Row, SaveMode}
 import utils._
 import DataFrameFunctions._
 import SparkSQLApp.{sparkSession}
-import configSQLServer.{jdbcUrl, connectionProperties, connection, schema} 
+import configSQLServer.{jdbcUrl, connectionProperties, connection, schema}
 import java.sql.{DriverManager, Connection, Statement, ResultSet}
 
 /**
@@ -19,7 +19,7 @@ object SQLStatements {
    * @return le DataFrame résultant de l'exécution de l'instruction SQL
    */
   def executeUpdateStatement(statement:String):Int = {
-     handleException[Int]({
+    handleException[Int]({
       var stmt:Statement = connection.createStatement();
       val sql: String = s"${statement}";
       stmt.executeUpdate(sql);
@@ -33,7 +33,7 @@ object SQLStatements {
    * @return le DataFrame résultant de l'exécution de l'instruction SQL
    */
   def executeQueryStatement(statement:String):DataFrame = {
-     handleException[DataFrame]({
+    handleException[DataFrame]({
       var stmt:Statement = connection.createStatement();
       val sql: String = s"${statement}";
       val resSet:ResultSet = stmt.executeQuery(sql);
@@ -114,7 +114,7 @@ object SQLStatements {
   def overwriteTable(tableName: String, df: DataFrame): Unit = {
     handleException[Unit]({
       if(tableExists(tableName)) {
-          dropTable(tableName)
+        dropTable(tableName)
       }
       createTable(tableName,df)
     },())
@@ -123,7 +123,7 @@ object SQLStatements {
   /**
    * @brief Vide une table de la base de données en supprimant toutes ses données.
    * En utilisant les fonctions DataFrame.
-   * 
+   *
    * @param tableName le nom de la table à vider
    */
   def truncateTableUsingDF(tableName: String): Unit = {
@@ -156,7 +156,7 @@ object SQLStatements {
    * @param newValue la nouvelle valeur de la colonne
    */
   def update(tableName: String, filter: Column, columnName:String, newValue:Any): Unit = {
-     handleException[Unit]({
+    handleException[Unit]({
       var df:DataFrame = getDFFromOptionDF(selectTable(tableName))
       df = updateRows(df, filter, columnName, newValue)
       overwriteTable(tableName, df)
@@ -184,7 +184,7 @@ object SQLStatements {
    * @param copyName le nom de la nouvelle table de destination
    */
   def copyTable(tableName:String, copyName:String):Unit = {
-     handleException[Unit]({
+    handleException[Unit]({
       var df:DataFrame = getDFFromOptionDF(selectTable(tableName))
       createTable(copyName, df)
     },())
@@ -197,7 +197,7 @@ object SQLStatements {
    * @param copyName le nom de la nouvelle table de destination
    */
   def copyTableForced(tableName:String, copyName:String):Unit = {
-     handleException[Unit]({
+    handleException[Unit]({
       var df:DataFrame = getDFFromOptionDF(selectTable(tableName))
       overwriteTable(copyName, df)
     },())
@@ -209,7 +209,7 @@ object SQLStatements {
    * @param procedureName le nom de la Stored Procedure à exécuter
    * @param params les paramètres de la Stored Procedure
    * @return le DataFrame résultant de l'exécution de la Stored Procedure
-   * 
+   *
    * @callExemple executeStoredProcedure(procedureName, Seq(param1, param2))
    */
   def executeStoredProcedure(procedureName: String, params: Seq[Any]): DataFrame = {
@@ -223,7 +223,7 @@ object SQLStatements {
    *
    * @param tableName le nom de la table 
    */
- def tableExists(tableName: String): Boolean = {
+  def tableExists(tableName: String): Boolean = {
     tableName.replaceAll(s".$schema", "")
     val metaData = connection.getMetaData
     val rs = metaData.getTables(null, null, "%", Array("TABLE"))
@@ -247,4 +247,23 @@ object SQLStatements {
     }
     rs.close()
   }
+
+  /**
+   * @brief Appelle une procédure stockee dans la base de donnees.
+   *
+   * @param procedureName le nom de la procédure stockée
+   * @param parameters les paramètres à passer à la procédure
+   */
+  def callStoredProcedure(procedureName: String, parameters: Option[String]*): Unit = {
+    handleException[Unit]({
+      val connection = java.sql.DriverManager.getConnection(jdbcUrl, connectionProperties)
+      try {
+        val callableStatement = connection.prepareCall(s"{call $procedureName(${parameters.flatten.mkString(", ")})}")
+        callableStatement.execute()
+      } finally {
+        connection.close()
+      }
+    }, ())
+  }
+
 }

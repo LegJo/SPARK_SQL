@@ -12,7 +12,7 @@ object utils {
    *
    * @param function la fonction dont on veux gerer les exception
    * @param default l'exception levee
-   */ 
+   */
   def handleException[T](function: => T, default: T): T = {
     try {
       function
@@ -39,10 +39,10 @@ object utils {
   }
 
   def printDataFrame(df: DataFrame): Unit = {
-      df.show();
-      printLine();    
+    df.show();
+    printLine();
   }
-  
+
   def currentFunctionName: String = {
     val currentMethodName = Thread.currentThread.getStackTrace()(3).getMethodName
     currentMethodName

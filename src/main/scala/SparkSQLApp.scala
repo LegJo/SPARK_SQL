@@ -1,31 +1,20 @@
 import java.util.Properties
 import java.sql.SQLException
-<<<<<<< Updated upstream
-import org.apache.spark.sql.{DataFrame, SparkSession}
-import org.apache.spark.sql.SaveMode
-import org.apache.spark.sql.types.{StructField, StructType, StringType}
-import org.apache.spark.sql.types.IntegerType
-=======
 import org.apache.spark.sql.{SparkSession, DataFrame, Column, Row, SaveMode}
 import org.apache.spark.sql.types._
 import org.apache.spark.sql.functions._
 import java.sql.{DriverManager,Connection}
->>>>>>> Stashed changes
 
-// !!!!!! To run sbt server with jdk11 : sbt -java-home "C:\Program Files\Java\jdk-11"  !!!!! 
+// !!!!!! To run sbt server with jdk11 : sbt -java-home "C:\Program Files\Java\jdk-11"  !!!!!
 
 object configSQLServer {
   private val SQLServerDriver:String = "oracle.jdbc.driver.OracleDriver"
   private val jdbcHostname:String = "localhost";
-  private val jdbcPort:Int = 1521; 
+  private val jdbcPort:Int = 1521;
   private val jdbcSID:String = "xe"; // SID de la base de données Oracle
   private val jdbcUsername:String = "system";
-<<<<<<< Updated upstream
-  private val jdbcPassword:String = "Change le mot de passe";
-=======
-  private val jdbcPassword:String = "dbadmin";
+  private val jdbcPassword:String = "root";
   val schema = jdbcUsername
->>>>>>> Stashed changes
   Class.forName(SQLServerDriver)
   val jdbcUrl:String = s"jdbc:oracle:thin:@${jdbcHostname}:${jdbcPort}:${jdbcSID}"
   val connectionProperties:Properties = new Properties() {{
@@ -56,7 +45,7 @@ object SparkSQLApp {
     printColoredText("cyan",s"jdbcUrl: ${jdbcUrl}")
     printColoredText("cyan",s"Connection: ${connectionProperties}")
     printLine()
-    
+
     //nom des table exemple
     val table_film:String = schema + ".film"
     val table_copy_film:String = schema + ".copy_film"
@@ -68,104 +57,11 @@ object SparkSQLApp {
     printLine()
 
     // Récupérer le DataFrame depuis la base de données
-<<<<<<< Updated upstream
-    val selectedData: Option[DataFrame] = SQLStatements.selectTable("system.film")
-    val selectedDataFromJSON: Option[DataFrame] = createDataFrameFromJson(".\\src\\data\\data.json")
-
-    // Filtrer les données si elles sont présentes, sinon renvoyer une DataFrame vide
-    val DF:DataFrame = DataFrameFunctions.getDFFromOptionDF(selectedDataFromJSON)
-    // printDataFrame(DF)
-
-    // val filteredDataFrame:DataFrame = DataFrameFunctions.filter(DF, "ANNEE > 1999")
-    // printDataFrame(filteredDataFrame)
-
-    // val orderedDataFrame: DataFrame = DataFrameFunctions.orderby(DF, "ANNEE")
-    // printDataFrame(orderedDataFrame)
-
-    // val selectedDataFrame: DataFrame = DataFrameFunctions.select(DF, "ANNEE", "TITRE")
-    // printDataFrame(selectedDataFrame)
-    
-    // val groupedDF = DataFrameFunctions.groupby(DF, "GENRE", ("ANNEE", "avg"), ("TITRE", "count"))
-    // printDataFrame(groupedDF)
-
-    // val droppedDataFrame: DataFrame = DataFrameFunctions.drop(DF, "ANNEE")
-    // printDataFrame(droppedDataFrame)   
-
-    // val distinctDataFrame: DataFrame = DataFrameFunctions.distinct(DF)
-    // printDataFrame(distinctDataFrame) 
-
-    // val unionDataFrame: DataFrame = DataFrameFunctions.union(DF, DF)
-    // printDataFrame(unionDataFrame) 
-
-    // val limitedDataFrame: DataFrame = DataFrameFunctions.limit(DF, 2)
-    // printDataFrame(limitedDataFrame) 
-
-    // val colStatsDataFrame: DataFrame = DataFrameFunctions.colStats(DF)
-    // printDataFrame(colStatsDataFrame) 
-
-    // val deleteRowDataFrame: DataFrame = DataFrameFunctions.deleteRows(DF,"ANNEE = 2002")
-    // printDataFrame(deleteRowDataFrame) 
-
-    // Tester la fonction addColumn
-    //val valuesToAdd = Seq("value1", "value2", "value3")
-    //val dfWithNewColumn = addColumn(DF, "newColumn", StringType, valuesToAdd)
-    //printDataFrame(dfWithNewColumn)
-
-    // Tester la fonction createDataFrameFromJson
-    // val jsonPath = ".\\src\\data\\data.json"
-    // val jsonDF = createDataFrameFromJson(jsonPath)
-    // jsonDF.foreach(printDataFrame) // Afficher le DataFrame créé à partir du fichier JSON
-
-    // Tester la fonction createDataFrameFromSeq
-    // Définir le schéma
-    // val schema = StructType(Seq(
-    //   StructField("num_ind", IntegerType, nullable = false),
-    //   StructField("titre", StringType, nullable = false),
-    //   StructField("genre", StringType, nullable = false),
-    //   StructField("annee", IntegerType, nullable = false)
-    // ))
-
-    // // Créer le Seq de données
-    // val seqData = Seq((777, "Spark Le Film", "SparkGenre", 2025))
-    // val dfOfTableToCreate: DataFrame = createDataFrameFromSeq(seqData, schema)
-    // dfOfTableToCreate.show()
-
-
-
-    // Partie JDBC
-
-    // val selectedTableDataFrame: Option[DataFrame] = SQLStatements.selectTable("system.film")
-    // printDataFrame(getDFFromOptionDF(selectedTableDataFrame))
-    // val selectedTableDataFrameWithFilter: Option[DataFrame] = SQLStatements.selectTable("system.film", "titre", "ANNEE > 2000")
-    // printDataFrame(getDFFromOptionDF(selectedTableDataFrameWithFilter))
-
-    // val newDF = Seq(
-    //   (15, 20 , "Interstellar", "Science Fiction", 2016),
-    //   (16, 21 , "Inception", "Science Fiction", 2010)
-    // ).toDF("NUM_FILM", "NUM_IND", "TITRE", "GENRE", "ANNEE")
-    // SQLStatements.createTable("system.newtable", newDF)
-    // printDataFrame(getDFFromOptionDF(SQLStatements.selectTable("system.newtable")))
-
-    // val anotherDF = Seq(
-    //   (14, 19 , "Interstellar1", "Science Fiction", 2014)
-    // ).toDF("NUM_FILM", "NUM_IND", "TITRE", "GENRE", "ANNEE")
-    // SQLStatements.overwriteTable("system.newtable", anotherDF)
-    // printDataFrame(getDFFromOptionDF(SQLStatements.selectTable("system.newtable")))
-
-    // val another2DF = Seq(
-    //   (17, 22 , "Interstellar2", "Science Fiction", 2018)
-    // ).toDF("NUM_FILM", "NUM_IND", "TITRE", "GENRE", "ANNEE")
-    // SQLStatements.insertInTable("system.newtable", another2DF)
-    // printDataFrame(getDFFromOptionDF(SQLStatements.selectTable("system.newtable")))
-
-    // SQLStatements.truncateTable("system.newtable")
-    // printDataFrame(getDFFromOptionDF(SQLStatements.selectTable("system.newtable")))
-=======
     var selectedDF:DataFrame = getDFFromOptionDF(SQLStatements.selectTable(table_film))
     printColoredText("green", "DataFrame From table " + table_film +" :")
     printDataFrame(selectedDF)
 
-    //Récupérer un DataFrame depuis un JSON 
+    //Récupérer un DataFrame depuis un JSON
     var selectedDFFromJSON:DataFrame = getDFFromOptionDF(createDataFrameFromJson(".\\src\\data\\data.json"))
     printColoredText("green", "DataFrame from JSON :")
     printDataFrame(selectedDFFromJSON)
@@ -177,7 +73,7 @@ object SparkSQLApp {
     printColoredText("green", "DataFrame From table " + table_JSON +" :")
     printDataFrame(selectedDFFromJSON)
 
-    //copie et select de la copie de la table film 
+    //copie et select de la copie de la table film
     SQLStatements.copyTableForced(table_film, table_copy_film)
     var selectedDFCopyFilm:DataFrame = getDFFromOptionDF(SQLStatements.selectTable(table_copy_film))
     printColoredText("green", "DataFrame From table " + table_copy_film +" :")
@@ -199,7 +95,7 @@ object SparkSQLApp {
     printColoredText("green", "DataFrame From table " + table_copy_film +" Apres Insertion:")
     printDataFrame(selectedDFCopyFilm)
 
-    //Truncate de la table copie film 
+    //Truncate de la table copie film
     SQLStatements.truncateTable(table_copy_film)
     selectedDFCopyFilm = getDFFromOptionDF(SQLStatements.selectTable(table_copy_film))
     //Affichage de la table copy film apres truncate
@@ -208,10 +104,10 @@ object SparkSQLApp {
 
     //drop de la table copie film
     SQLStatements.dropTable(table_copy_film)
-    //Montrer que la table est drop 
-    
-      ///////////////////////////////
-     //Fonctions sur les DataFrame//
+    //Montrer que la table est drop
+
+    ///////////////////////////////
+    //Fonctions sur les DataFrame//
     ///////////////////////////////
 
     var DF:DataFrame = selectedDFFromJSON
@@ -276,7 +172,7 @@ object SparkSQLApp {
     val truncatedDF = DataFrameFunctions.truncate(originalDF)
     assert(truncatedDF.isEmpty, "truncate: Le DataFrame doit être vide après avoir été tronqué.")
     printColoredText("green", "DataFrame apres truncate :")
-    printDataFrame(truncatedDF)  
+    printDataFrame(truncatedDF)
 
     // Effectuer une jointure gauche entre deux DataFrame
     val df1 = sparkSession.createDataFrame(Seq((1, "A"), (2, "B"))).toDF("id", "value1")
@@ -313,7 +209,7 @@ object SparkSQLApp {
     val valuesToAdd = Seq("value1", "value2", "value3")
     val dfWithNewColumn = addColumn(DF, "newColumn", StringType, valuesToAdd)
     printColoredText("green", "DataFrame avec Column newColumn ajoutée :")
-    printDataFrame(dfWithNewColumn) 
+    printDataFrame(dfWithNewColumn)
 
     // Créer un DataFrame à partir d'un fichier JSON
     val jsonPath = ".\\src\\data\\data.json"
@@ -340,7 +236,38 @@ object SparkSQLApp {
     val updatedDF: DataFrame = updateRows(jsonDF, col("ANNEE") === 2002, "TITRE", "New Title")
     printColoredText("green", "DataFrame creer depuis JSON avec titre updated :")
     printDataFrame(updatedDF)
->>>>>>> Stashed changes
+
+    // Partie JDBC
+
+    // val selectedTableDataFrame: Option[DataFrame] = SQLStatements.selectTable("system.film")
+    // printDataFrame(getDFFromOptionDF(selectedTableDataFrame))
+    // val selectedTableDataFrameWithFilter: Option[DataFrame] = SQLStatements.selectTable("system.film", "titre", "ANNEE > 2000")
+    // printDataFrame(getDFFromOptionDF(selectedTableDataFrameWithFilter))
+
+    // val newDF = Seq(
+    //   (15, 20 , "Interstellar", "Science Fiction", 2016),
+    //   (16, 21 , "Inception", "Science Fiction", 2010)
+    // ).toDF("NUM_FILM", "NUM_IND", "TITRE", "GENRE", "ANNEE")
+    // SQLStatements.createTable("system.newtable", newDF)
+    // printDataFrame(getDFFromOptionDF(SQLStatements.selectTable("system.newtable")))
+
+    // val anotherDF = Seq(
+    //   (14, 19 , "Interstellar1", "Science Fiction", 2014)
+    // ).toDF("NUM_FILM", "NUM_IND", "TITRE", "GENRE", "ANNEE")
+    // SQLStatements.overwriteTable("system.newtable", anotherDF)
+    // printDataFrame(getDFFromOptionDF(SQLStatements.selectTable("system.newtable")))
+
+    // val another2DF = Seq(
+    //   (17, 22 , "Interstellar2", "Science Fiction", 2018)
+    // ).toDF("NUM_FILM", "NUM_IND", "TITRE", "GENRE", "ANNEE")
+    // SQLStatements.insertInTable("system.newtable", another2DF)
+    // printDataFrame(getDFFromOptionDF(SQLStatements.selectTable("system.newtable")))
+
+    // SQLStatements.truncateTable("system.newtable")
+    // printDataFrame(getDFFromOptionDF(SQLStatements.selectTable("system.newtable")))
+
+    // Appeler la procédure stockée
+    SQLStatements.callStoredProcedure("select_dramatic_films")
 
     println("Stopping Spark session...")
     connection.close()
