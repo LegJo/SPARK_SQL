@@ -15,7 +15,6 @@ object configSQLServer {
   private val jdbcUsername:String = "system";
   private val jdbcPassword:String = "dbadmin";
   val schema = jdbcUsername
-    
   Class.forName(SQLServerDriver)
   val jdbcUrl:String = s"jdbc:oracle:thin:@${jdbcHostname}:${jdbcPort}:${jdbcSID}"
   val connectionProperties:Properties = new Properties() {{
@@ -68,6 +67,11 @@ object SparkSQLApp {
     var selectedDFFromJSON:DataFrame = getDFFromOptionDF(createDataFrameFromJson(".\\src\\data\\data.json"))
     printColoredText("green", "DataFrame from JSON :")
     printDataFrame(selectedDFFromJSON)
+
+    //Creer un DataFrame avec une range 
+    var rangeDF:DataFrame = sparkSession.range(10).toDF
+    printColoredText("green", "DataFrame range :")
+    printDataFrame(rangeDF)
 
     //Creation de la table avec le DataFrame du JSON
     SQLStatements.createTable(table_JSON, selectedDFFromJSON)

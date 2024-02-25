@@ -15,6 +15,7 @@ object DataFrameFunctions {
   //                                                                                                               *
   // emptyDF : Crée un DataFrame vide                                                                              *
   // getDFFromOptionDF : Récupère un DataFrame à partir d'un Option[DataFrame]                                     *
+  // executeAnyStatementOnDF : Creer une Temp Vue avec dataframe et execute le statement SQL dessus                *
   // filter : Filtrer les données selon une condition sur une colonne donnée                                       *
   // orderBy : Trie les lignes du DataFrame en fonction des colonnes spécifiées                                    *
   // groupBy : Regroupe les lignes du DataFrame en fonction des valeurs des colonnes spécifiées                    *
