@@ -43,6 +43,13 @@ object DataFrameFunctions {
     OptionDF.getOrElse(emptyDF)
   }
 
+  def executeAnyStatementOnDF(statement:String, df:DataFrame, dfViewName:String):DataFrame = {
+    handleException[DataFrame]({
+      df.createOrReplaceTempView(dfViewName)
+      sparkSession.sql(statement);
+    },emptyDF)
+  }
+
   def filter(df: DataFrame, conditions: String): DataFrame = {
     handleException[DataFrame]({
       df.filter(conditions)

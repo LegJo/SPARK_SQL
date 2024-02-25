@@ -9,8 +9,10 @@ object configSQLServer {
   Class.forName(SQLServerDriver)
   val jdbcUrl:String = s"jdbc:oracle:thin:@${jdbcHostname}:${jdbcPort}:${jdbcSID}"
   val connectionProperties:Properties = new Properties() {{
-    put("user", jdbcUsername)
-    put("password", jdbcPassword)
+      put("url", jdbcUrl);
+      put("user", jdbcUsername);
+      put("password", jdbcPassword);
+      put("driver", SQLServerDriver);
   }};
   val connection:Connection = DriverManager.getConnection(jdbcUrl, connectionProperties)
 }

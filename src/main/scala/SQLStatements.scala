@@ -14,6 +14,7 @@ object SQLStatements {
 
   /**
    * @brief Exécute une instruction SQL qui update la database (INSERT, UPDATE, DELETE, DROP).
+   * Pour pallier les limitation de SparkSQL : utilise Java SQL et non pas SparkSQL
    *
    * @param statement l'instruction SQL à exécuter
    * @return le DataFrame résultant de l'exécution de l'instruction SQL
@@ -28,6 +29,7 @@ object SQLStatements {
 
   /**
    * @brief Exécute une instruction SQL qui retourne des données et les retourne dans DataFrame en résultat.
+   * Pour pallier les limitation de SparkSQL : utilise Java SQL et non pas SparkSQL
    *
    * @param statement l'instruction SQL à exécuter
    * @return le DataFrame résultant de l'exécution de l'instruction SQL

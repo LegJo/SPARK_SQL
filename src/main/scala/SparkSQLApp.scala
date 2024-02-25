@@ -10,16 +10,19 @@ import java.sql.{DriverManager,Connection}
 object configSQLServer {
   private val SQLServerDriver:String = "oracle.jdbc.driver.OracleDriver"
   private val jdbcHostname:String = "localhost";
-  private val jdbcPort:Int = 1521;
+  private val jdbcPort:Int = 1521; 
   private val jdbcSID:String = "xe"; // SID de la base de données Oracle
   private val jdbcUsername:String = "system";
-  private val jdbcPassword:String = "root";
+  private val jdbcPassword:String = "dbadmin";
   val schema = jdbcUsername
+    
   Class.forName(SQLServerDriver)
   val jdbcUrl:String = s"jdbc:oracle:thin:@${jdbcHostname}:${jdbcPort}:${jdbcSID}"
   val connectionProperties:Properties = new Properties() {{
-    put("user", jdbcUsername)
-    put("password", jdbcPassword)
+      put("url", jdbcUrl);
+      put("user", jdbcUsername);
+      put("password", jdbcPassword);
+      put("driver", SQLServerDriver);
   }};
   val connection:Connection = DriverManager.getConnection(jdbcUrl, connectionProperties)
 }
@@ -111,6 +114,17 @@ object SparkSQLApp {
     ///////////////////////////////
 
     var DF:DataFrame = selectedDFFromJSON
+
+    //Execution de n'importe quelle statemnt SQL sur un DataFrame 
+    val JSONViewName:String = "film_JSON"
+    val anyStatementDF: DataFrame = DataFrameFunctions.executeAnyStatementOnDF(
+      "SELECT " +
+        "AVG(ANNEE) AS MOY_ANNEE, GENRE " +
+        "FROM " + JSONViewName + " GROUP BY GENRE;",
+        DF, JSONViewName    
+      )
+    printColoredText("green", "Execution de n'importe quelle statemnt SQL sur un DataFrame :")
+    printDataFrame(anyStatementDF)
 
     // Filtrer les données avec une condition spécifique
     val filteredDataFrame: DataFrame = DataFrameFunctions.filter(DF, "ANNEE > 1999")
