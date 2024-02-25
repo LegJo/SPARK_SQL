@@ -1,10 +1,10 @@
 object configSQLServer {
-  private val SQLServerDriver:String = "com.microsoft.sqlserver.jdbc.SQLServerDriver"
-  private val jdbcHostname:String = "localhost";
-  private val jdbcPort:Int = 1433; 
-  private val jdbcDatabase:String = "JL_DB_PROD";
-  private val jdbcUsername:String = "jl_admin";
-  private val jdbcPassword:String = "dbadmin";
+  val SQLServerDriver:String = "com.microsoft.sqlserver.jdbc.SQLServerDriver"
+  val jdbcHostname:String = "localhost";
+  val jdbcPort:Int = 1433; 
+  val jdbcDatabase:String = "JL_DB_PROD";
+  val jdbcUsername:String = "jl_admin";
+  val jdbcPassword:String = "dbadmin";
   val schema = "dbo"
   Class.forName(SQLServerDriver);
   val jdbcUrl:String = s"jdbc:sqlserver://${jdbcHostname}:${jdbcPort};database=${jdbcDatabase}";

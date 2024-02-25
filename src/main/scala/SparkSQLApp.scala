@@ -8,15 +8,16 @@ import java.sql.{DriverManager,Connection}
 // !!!!!! To run sbt server with jdk11 : sbt -java-home "C:\Program Files\Java\jdk-11"  !!!!!
 
 object configSQLServer {
-  private val SQLServerDriver:String = "oracle.jdbc.driver.OracleDriver"
-  private val jdbcHostname:String = "localhost";
-  private val jdbcPort:Int = 1521; 
-  private val jdbcSID:String = "xe"; // SID de la base de données Oracle
-  private val jdbcUsername:String = "system";
-  private val jdbcPassword:String = "dbadmin";
+  val SQLServerDriver:String = "oracle.jdbc.driver.OracleDriver"
+  val jdbcHostname:String = "localhost";
+  val jdbcPort:Int = 1521; 
+  val jdbcDatabase:String = "xe"; // SID de la base de données Oracle
+  val jdbcUsername:String = "system";
+  val jdbcPassword:String = "dbadmin";
   val schema = jdbcUsername
+
   Class.forName(SQLServerDriver)
-  val jdbcUrl:String = s"jdbc:oracle:thin:@${jdbcHostname}:${jdbcPort}:${jdbcSID}"
+  val jdbcUrl:String = s"jdbc:oracle:thin:@${jdbcHostname}:${jdbcPort}:${jdbcDatabase}"
   val connectionProperties:Properties = new Properties() {{
       put("url", jdbcUrl);
       put("user", jdbcUsername);
@@ -58,10 +59,9 @@ object SparkSQLApp {
     SQLStatements.listTables()
     printLine()
 
-    // Récupérer le DataFrame depuis la base de données
-    var selectedDF:DataFrame = getDFFromOptionDF(SQLStatements.selectTable(table_film))
-    printColoredText("green", "DataFrame From table " + table_film +" :")
-    printDataFrame(selectedDF)
+    ////////////////////////////////
+    // Partie JDBC et Recup Data //
+    //////////////////////////////
 
     //Récupérer un DataFrame depuis un JSON
     var selectedDFFromJSON:DataFrame = getDFFromOptionDF(createDataFrameFromJson(".\\src\\data\\data.json"))
@@ -73,12 +73,59 @@ object SparkSQLApp {
     printColoredText("green", "DataFrame range :")
     printDataFrame(rangeDF)
 
+    //Creation d'un DataFrame Depuis un Seq
+    val DFFromSeq = Seq(
+      (15, 20 , "Interstellar", "Science Fiction", 2016),
+      (16, 21 , "Inception", "Science Fiction", 2010)
+    ).toDF("NUM_FILM", "NUM_IND", "TITRE", "GENRE", "ANNEE")
+     printColoredText("green", "DataFrame From Seq :")
+    printDataFrame(DFFromSeq)
+
+    // Récupérer le DataFrame depuis la base de données
+    var selectedDF:DataFrame = getDFFromOptionDF(SQLStatements.selectTable(table_film))
+    printColoredText("green", "DataFrame From table " + table_film +" :")
+    printDataFrame(selectedDF)
+
     //Creation de la table avec le DataFrame du JSON
     SQLStatements.createTable(table_JSON, selectedDFFromJSON)
     //Select & Affiche la table creer
     selectedDFFromJSON = getDFFromOptionDF(SQLStatements.selectTable(table_JSON))
     printColoredText("green", "DataFrame From table " + table_JSON +" :")
     printDataFrame(selectedDFFromJSON)
+
+    //Exemples de read.option()
+    val dfOption: DataFrame = 
+    sparkSession.read.format("jdbc")
+      .option("url", jdbcUrl)
+      .option("user", jdbcUsername)
+      .option("password", jdbcPassword)
+      .option("dbtable", schema + ".film")
+      .option("fetchsize", "1000")
+      .load()
+    printColoredText("green", "Read avec Option 1 :")
+    printDataFrame(dfOption)
+
+    val dfOption2 : DataFrame = 
+    sparkSession.read.format("jdbc")
+      .option("url", jdbcUrl)
+      .option("user", jdbcUsername)
+      .option("password", jdbcPassword)
+      .option("driver", SQLServerDriver)
+      .option("query", "SELECT distinct(TITRE) from " + table_film)
+      .load()
+    printColoredText("green", "Read avec Option 2 :")
+    printDataFrame(dfOption2)
+
+    val dfOption3 : DataFrame = 
+    sparkSession.read.format("jdbc")
+      .option("url", jdbcUrl)
+      .option("user", jdbcUsername)
+      .option("password", jdbcPassword)
+      .option("prepareQuery", "(SELECT * INTO #TempTable FROM (SELECT GENRE FROM "+table_film+") t)")
+      .option("query", "SELECT * FROM #TempTable WHERE GENRE LIKE 'P%'")
+      .load()
+    printColoredText("green", "Read avec Option 3 :")
+    printDataFrame(dfOption3)
 
     //copie et select de la copie de la table film
     SQLStatements.copyTableForced(table_film, table_copy_film)
@@ -111,7 +158,11 @@ object SparkSQLApp {
 
     //drop de la table copie film
     SQLStatements.dropTable(table_copy_film)
-    //Montrer que la table est drop
+    
+    //Execution Stored Procedure
+    // var dfSP: DataFrame = SQLStatements.executeStoredProcedure(schema + ".TestProcedure", Seq("'TestTableTable'"))
+    // printColoredText("green", "Result Stored Procedure:")
+    // printDataFrame(dfSP)
 
     ///////////////////////////////
     //Fonctions sur les DataFrame//
@@ -254,38 +305,6 @@ object SparkSQLApp {
     val updatedDF: DataFrame = updateRows(jsonDF, col("ANNEE") === 2002, "TITRE", "New Title")
     printColoredText("green", "DataFrame creer depuis JSON avec titre updated :")
     printDataFrame(updatedDF)
-
-    // Partie JDBC
-
-    // val selectedTableDataFrame: Option[DataFrame] = SQLStatements.selectTable("system.film")
-    // printDataFrame(getDFFromOptionDF(selectedTableDataFrame))
-    // val selectedTableDataFrameWithFilter: Option[DataFrame] = SQLStatements.selectTable("system.film", "titre", "ANNEE > 2000")
-    // printDataFrame(getDFFromOptionDF(selectedTableDataFrameWithFilter))
-
-    // val newDF = Seq(
-    //   (15, 20 , "Interstellar", "Science Fiction", 2016),
-    //   (16, 21 , "Inception", "Science Fiction", 2010)
-    // ).toDF("NUM_FILM", "NUM_IND", "TITRE", "GENRE", "ANNEE")
-    // SQLStatements.createTable("system.newtable", newDF)
-    // printDataFrame(getDFFromOptionDF(SQLStatements.selectTable("system.newtable")))
-
-    // val anotherDF = Seq(
-    //   (14, 19 , "Interstellar1", "Science Fiction", 2014)
-    // ).toDF("NUM_FILM", "NUM_IND", "TITRE", "GENRE", "ANNEE")
-    // SQLStatements.overwriteTable("system.newtable", anotherDF)
-    // printDataFrame(getDFFromOptionDF(SQLStatements.selectTable("system.newtable")))
-
-    // val another2DF = Seq(
-    //   (17, 22 , "Interstellar2", "Science Fiction", 2018)
-    // ).toDF("NUM_FILM", "NUM_IND", "TITRE", "GENRE", "ANNEE")
-    // SQLStatements.insertInTable("system.newtable", another2DF)
-    // printDataFrame(getDFFromOptionDF(SQLStatements.selectTable("system.newtable")))
-
-    // SQLStatements.truncateTable("system.newtable")
-    // printDataFrame(getDFFromOptionDF(SQLStatements.selectTable("system.newtable")))
-
-    // Appeler la procédure stockée
-    SQLStatements.callStoredProcedure("select_dramatic_films")
 
     println("Stopping Spark session...")
     connection.close()

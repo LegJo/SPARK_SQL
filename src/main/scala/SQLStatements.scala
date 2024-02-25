@@ -249,23 +249,4 @@ object SQLStatements {
     }
     rs.close()
   }
-
-  /**
-   * @brief Appelle une procédure stockee dans la base de donnees.
-   *
-   * @param procedureName le nom de la procédure stockée
-   * @param parameters les paramètres à passer à la procédure
-   */
-  def callStoredProcedure(procedureName: String, parameters: Option[String]*): Unit = {
-    handleException[Unit]({
-      val connection = java.sql.DriverManager.getConnection(jdbcUrl, connectionProperties)
-      try {
-        val callableStatement = connection.prepareCall(s"{call $procedureName(${parameters.flatten.mkString(", ")})}")
-        callableStatement.execute()
-      } finally {
-        connection.close()
-      }
-    }, ())
-  }
-
 }
