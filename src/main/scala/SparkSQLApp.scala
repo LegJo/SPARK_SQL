@@ -119,6 +119,17 @@ object SparkSQLApp {
     printColoredText("green", "Read avec Option 2 :")
     printDataFrame(dfOption2)
 
+    val dfOption3 : DataFrame =
+      sparkSession.read.format("jdbc")
+        .option("url", jdbcUrl)
+        .option("user", jdbcUsername)
+        .option("password", jdbcPassword)
+        .option("prepareQuery", "(SELECT * INTO #TempTable FROM (SELECT GENRE FROM "+table_film+") t)")
+        .option("query", "SELECT * FROM #TempTable WHERE GENRE LIKE 'P%'")
+        .load()
+    printColoredText("green", "Read avec Option 3 :")
+    printDataFrame(dfOption3)
+
     //Exemple de write.mode() : Insère des donnees dans une table de la base de donnees.
     //dfOption.write.mode(SaveMode.Append).jdbc(jdbcUrl, "system.film", connectionProperties)
     //dfOption.write.mode(SaveMode.Overwrite).jdbc(jdbcUrl, "system.film", connectionProperties)
