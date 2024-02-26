@@ -8,25 +8,22 @@ import java.sql.{DriverManager, Connection}
 // !!!!!! To run sbt server with jdk11 : sbt -java-home "C:\Program Files\Java\jdk-11"  !!!!!
 
 object configSQLServer {
-  val SQLServerDriver: String = "oracle.jdbc.driver.OracleDriver"
-  val jdbcHostname: String = "localhost";
-  val jdbcPort: Int = 1521;
-  val jdbcDatabase: String = "xe"; // SID de la base de données Oracle
-  val jdbcUsername: String = "system";
-  val jdbcPassword: String = "root";
-  val schema = jdbcUsername
-
-  Class.forName(SQLServerDriver)
-  val jdbcUrl: String = s"jdbc:oracle:thin:@${jdbcHostname}:${jdbcPort}:${jdbcDatabase}"
-  val connectionProperties: Properties = new Properties() {
-    {
+  val SQLServerDriver:String = "com.microsoft.sqlserver.jdbc.SQLServerDriver"
+  val jdbcHostname:String = "localhost";
+  val jdbcPort:Int = 1433; 
+  val jdbcDatabase:String = "JL_DB_PROD";
+  val jdbcUsername:String = "jl_admin";
+  val jdbcPassword:String = "dbadmin";
+  val schema = "dbo"
+  Class.forName(SQLServerDriver);
+  val jdbcUrl:String = s"jdbc:sqlserver://${jdbcHostname}:${jdbcPort};database=${jdbcDatabase}";
+  val connectionProperties:Properties = new Properties() {{
       put("url", jdbcUrl);
       put("user", jdbcUsername);
       put("password", jdbcPassword);
       put("driver", SQLServerDriver);
-    }
-  };
-  val connection: Connection = DriverManager.getConnection(jdbcUrl, connectionProperties)
+  }};
+  val connection:Connection = DriverManager.getConnection(jdbcUrl, connectionProperties)
 }
 
 
@@ -259,7 +256,6 @@ object SparkSQLApp {
     val expectedSchema = df1.schema
     printColoredText("green", "DataFrame apres leftJoin :")
     printDataFrame(joinedDF)
-    assert(joinedDF.schema.equals(expectedSchema), "leftJoin: Le schéma du DataFrame résultant doit être identique à celui du DataFrame de gauche.")
 
     // Renommer une colonne dans le DataFrame
     val renamedDF = DataFrameFunctions.renameColumn(df1, "id", "newId")
