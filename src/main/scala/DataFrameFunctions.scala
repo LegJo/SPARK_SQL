@@ -227,6 +227,9 @@ def rightJoin(df1: DataFrame, df2: DataFrame, joinColumn: String): DataFrame = {
     }, None)
   }
 
+
+
+  
   // Fonction pour créer un DataFrame à partir d'une séquence de maps
   def createDataFrameFromSeq(seq: Seq[Product], schema: StructType): DataFrame = {
     handleException[DataFrame]({
