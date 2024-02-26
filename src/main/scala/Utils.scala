@@ -1,5 +1,8 @@
 import org.apache.spark.sql.{DataFrame, SparkSession}
+
 import java.sql.SQLException
+import  org.apache.spark.sql.AnalysisException
+
 import java.io.{FileOutputStream, PrintStream}
 import org.apache.commons.lang3.exception.ExceptionUtils
 
@@ -11,7 +14,7 @@ object utils {
    * Gère les exceptions et les imprime avec des informations contextuelles.
    *
    * @param function la fonction dont on veux gerer les exception
-   * @param default l'exception levee
+   * @param default valeur par defaut qui sera retournés si il y a une exception
    */
   def handleException[T](function: => T, default: T): T = {
     try {
@@ -19,8 +22,8 @@ object utils {
     } catch {
       case ex: Exception => {
         var errMsg:String = getErrorMessage(ex, currentFunctionName)
-        var datetime:String = getCurrentDateTimeStr()
         printColoredText("red", errMsg)
+        var datetime:String = getCurrentDateTimeStr()
         printLine();
         var logLine:String = "> " + datetime + " : " + errMsg
         var line:String = "-".repeat(logLine.length())
@@ -31,6 +34,17 @@ object utils {
         writeInLogFile(line)
         default
       }
+    }
+  }
+
+   def getErrorMessage(ex: Exception, functionName:String): String = {
+    ex match {
+      case sqlEx: SQLException =>
+        s"SQL ERROR : Erreur SQL lors de $functionName : ${sqlEx.getMessage}"
+      case analysisEx: AnalysisException =>
+        s"ANALYSIS ERROR : Erreur d'Analyse lors de $functionName : ${analysisEx.getMessage}"
+      case _ =>
+        s"ERROR : Une erreur inattendue s'est produite lors de $functionName : ${ex.getMessage}"
     }
   }
 
@@ -54,17 +68,6 @@ object utils {
     val printStream = new PrintStream(fileStream)
     printStream.println(message)
     printStream.close()
-  }
-
-  def getErrorMessage(ex: Exception, functionName:String): String = {
-    ex match {
-      case sqlEx: SQLException =>
-        s"SQL ERROR : Erreur SQL lors de $functionName : ${sqlEx.getMessage}"
-      case analysisEx: org.apache.spark.sql.AnalysisException =>
-        s"ANALYSIS ERROR : Erreur d'Analyse lors de $functionName : ${analysisEx.getMessage}"
-      case _ =>
-        s"ERROR : Une erreur inattendue s'est produite lors de $functionName : ${ex.getMessage}"
-    }
   }
 
   def getCurrentDateTimeStr():String = {
