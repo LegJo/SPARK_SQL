@@ -139,49 +139,33 @@ object DataFrameFunctions {
     },df)
   }
 
-  def leftJoin(df1: DataFrame, df2: DataFrame, joinColumn: String): DataFrame = {
-    handleException[DataFrame]({
-      val joined = df1.join(df2, joinColumn, "left")
-      if (joined.columns.contains(joinColumn)) {
-        joined.select(df1.columns.map(col): _*)
-      } else {
-        df1
-      }
-    }, df1)
-  }
+def leftJoin(df1: DataFrame, df2: DataFrame, joinColumn: String): DataFrame = {
+  handleException[DataFrame]({
+    val joined = df1.join(df2, joinColumn, "left")
+    joined
+  }, df1)
+}
 
 
-  def rightJoin(df1: DataFrame, df2: DataFrame, joinColumn: String): DataFrame = {
-    handleException[DataFrame]({
-      val joined = df1.join(df2, joinColumn, "right")
-      if (joined.columns.contains(joinColumn)) {
-        joined.select(df1.columns.map(col): _*)
-      } else {
-        df1
-      }
-    }, df1)
-  }
+def rightJoin(df1: DataFrame, df2: DataFrame, joinColumn: String): DataFrame = {
+  handleException[DataFrame]({
+    val joined = df1.join(df2, joinColumn, "right")
+    joined
+  }, df1)
+}
 
   def innerJoin(df1: DataFrame, df2: DataFrame, joinColumn: String): DataFrame = {
-    handleException[DataFrame]({
-      val joined = df1.join(df2, joinColumn, "inner")
-      if (joined.columns.contains(joinColumn)) {
-        joined.select(df1.columns.map(col): _*)
-      } else {
-        df1
-      }
-    }, df1)
+  handleException[DataFrame]({
+    val joined = df1.join(df2, joinColumn, "inner")
+    joined
+  }, df1)
   }
 
   def outerJoin(df1: DataFrame, df2: DataFrame, joinColumn: String): DataFrame = {
-    handleException[DataFrame]({
-      val joined = df1.join(df2, joinColumn, "outer")
-      if (joined.columns.contains(joinColumn)) {
-        joined.select(df1.columns.map(col): _*)
-      } else {
-        df1
-      }
-    }, df1)
+  handleException[DataFrame]({
+    val joined = df1.join(df2, joinColumn, "outer")
+    joined
+  }, df1)
   }
 
   def renameColumn(df: DataFrame, oldColumnName: String, newColumnName: String): DataFrame = {
